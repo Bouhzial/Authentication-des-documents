@@ -3,8 +3,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import Search from './search'
 
+interface User {
+  nom: string;
+  role: string;
+  email: string;
+  matricule: number;
+  prenom: string;
+  date_naissance: string;
+  leui_naissance: string;
+  telephone: number;
+  image: {
+    name: string;
+    size: number;
+    lastModified: number;
+    type: string;
+  };
+  //add the other user fields
+}
 interface Props {
-  data: any;
+  data: User[];
 }
 export default function UserDashBoard({data}:Props) {
   console.log(data);
@@ -26,7 +43,7 @@ export default function UserDashBoard({data}:Props) {
             </tr>
           </thead>
           <tbody className='text-black'>
-            {data && data.map((user:any) => {
+            {data && data.map((user:User) => {
               return (
             <tr className="h-16">
               <td className="pl-4 ">{user.nom +" "+ user.prenom}</td>
