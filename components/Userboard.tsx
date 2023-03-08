@@ -39,7 +39,9 @@ export default function UserDashBoard({data}:Props) {
   
   const [seachedData,setSeachedData] = React.useState<User[]>(data);
   
- 
+ useEffect(() => {
+    setSeachedData(data)
+  }, [data])
   function searchData() {
     console.log(search.serached);
     if(search.serached.length>0){
@@ -97,7 +99,7 @@ function Delete(user:User) {
             </tr>
           </thead>
           <tbody className='font-medium'>
-            {data && data.map((user:User) => {
+            {seachedData && seachedData.map((user:User) => {
               return (
             <tr className="h-16">
               <td className="pl-4 ">{user.nom +" "+ user.prenom}</td>
