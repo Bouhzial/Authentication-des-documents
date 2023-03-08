@@ -10,7 +10,7 @@ export default function index() {
   return (
     <div>
       <main className='flex'>
-      <SideNav name="Mohamed" image_link="/Rafik.jpg" option1="Gérer Utilisateur" option2="Gérer Etudiants"/>
+      <SideNav name="Mohamed" image_link="/Rafik.jpg" options={[{name:"Gerer Utilisateurs",link:"/"},{name:"Creer Utilisateur",link:"./create_users"},{name:"Verifier Diplomes",link:"verifier_diplome"}]}/>
         <UserForm/>
         <UserDashBoard data={users}/>
       </main>

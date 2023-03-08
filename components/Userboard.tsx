@@ -2,6 +2,7 @@ import { faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import Search from './search'
+import {useEffect} from 'react'
 
 interface User {
   nom: string;
@@ -28,12 +29,17 @@ interface SearchedObejct {
   type: string;
 }
 
+
 export default function UserDashBoard({data}:Props) {
+  
   const [search,setSearch] = React.useState<SearchedObejct>({
     serached:'',
     type:'',
   })  
+  
   const [seachedData,setSeachedData] = React.useState<User[]>(data);
+  
+ 
   function searchData() {
     console.log(search.serached);
     if(search.serached.length>0){
@@ -54,8 +60,7 @@ export default function UserDashBoard({data}:Props) {
           return user.nom.toLowerCase().includes(search.serached.toLowerCase())
         }
       })
-      setSeachedData(newData)
-      console.log(seachedData);      
+      setSeachedData(newData)    
     }
     else{
       setSeachedData(data)
@@ -74,7 +79,7 @@ function Delete(user:User) {
 
   
   return (
-    <div className='m-8 flex flex-col items-center w-3/5'>
+    <div className='m-8 flex flex-col items-center w-4/5'>
       <div className='flex items-center justify-between w-full'>
       <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Les Utilisateurers </h1>
        <Search change={(val:SearchedObejct) => {setSearch(val);searchData()}}/>
@@ -92,8 +97,7 @@ function Delete(user:User) {
             </tr>
           </thead>
           <tbody className='font-medium'>
-            {data && seachedData
-      .map((user:User) => {
+            {data && data.map((user:User) => {
               return (
             <tr className="h-16">
               <td className="pl-4 ">{user.nom +" "+ user.prenom}</td>

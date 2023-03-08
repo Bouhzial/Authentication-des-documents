@@ -18,7 +18,7 @@ function CircularImageInput({onChange }: Props) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className=" col-span-4 flex flex-col items-center justify-center">
       <label
         htmlFor="image"
         className="w-24 h-24 m-4 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-600 focus-within:border-blue-500"
