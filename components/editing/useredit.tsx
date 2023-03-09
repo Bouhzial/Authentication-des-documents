@@ -1,10 +1,10 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import React from 'react'
-import { api } from '../src/utils/api';
+import { api } from '../../src/utils/api';
 import EditInput from './EditInput';
 import EditRole from './editrole';
 interface User {
-  id: number;
+  id: string;
     nom: string;
     role: string;
     email: string;

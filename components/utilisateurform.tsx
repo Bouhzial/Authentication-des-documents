@@ -1,15 +1,17 @@
 import { faCalendar, faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons'
 import { faPhone,faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
-import Dropdown from './dropdown'
-import CircularImageInput from './imageinput'
-import Input from './input'
-import emailjs from 'emailjs-com';
+import Dropdown from './generic/dropdown'
+import CircularImageInput from './generic/imageinput'
+import Input from './generic/input'
+import { v4 as uuid } from 'uuid';
 import { api } from '../src/utils/api'
+
 
 export default function UserForm() {
   const mutation = api.users.AddUser.useMutation();
     const [user,setUser] = React.useState<any>({
+        id: 0,
         nom: '',
         prenom: '',
         date_naissance: '',
@@ -21,6 +23,8 @@ export default function UserForm() {
         image: null,
     })
     function Submit(){
+      user.id = uuid();
+      console.log(user.id)
       user.matricule = parseInt(user.matricule);
       user.telephone = parseInt(user.telephone);
       user.image = {name: user.image.name, size: user.image.size, lastModified: user.image.lastModified, type: user.image.type};

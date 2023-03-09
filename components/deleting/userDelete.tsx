@@ -1,9 +1,9 @@
 import React from 'react'
-import { api } from '../src/utils/api';
+import { api } from '../../src/utils/api';
 import DeleteInput from './deleteinput';
 
 interface User {
-    id: number;
+    id: string;
     nom: string;
     role: string;
     email: string;
