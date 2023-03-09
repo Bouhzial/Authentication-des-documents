@@ -21,6 +21,8 @@ export const userRouter = createTRPCRouter({
     }),
 
     deleteUserById: t.procedure.input(z.string()).mutation(({ input }) => {
+      console.log(input);
+      
       //deletes user form database based on id
       users.splice(users.findIndex((user) => user.id === input), 1);
 
@@ -38,6 +40,7 @@ export const userRouter = createTRPCRouter({
       image: z.object({name: z.string(), size: z.number(), lastModified: z.number(), type: z.string(),}),
     })).mutation(({ input }) => {
       //modifies the user in the database based on id
+      console.log(input);
       users[users.findIndex((user) => user.id === input.id)] = input;
       
   }),

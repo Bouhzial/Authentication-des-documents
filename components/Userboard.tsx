@@ -1,29 +1,13 @@
 import { faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import Search from './search'
+import Search from './generic/search'
 import {useEffect} from 'react'
-import Useredit from './useredit'
-import UserDelete from './userDelete'
+import Useredit from './editing/useredit'
+import UserDelete from './deleting/userDelete'
+import { User } from '../types'
 
-interface User {
-  id: number
-  nom: string;
-  role: string;
-  email: string;
-  matricule: number;
-  prenom: string;
-  date_naissance: string;
-  leui_naissance: string;
-  telephone: number;
-  image: {
-    name: string;
-    size: number;
-    lastModified: number;
-    type: string;
-  };
-  //add the other user fields
-}
+
 interface Props {
   data: User[];
 }
@@ -72,9 +56,8 @@ export default function UserDashBoard({data}:Props) {
       setSeachedData(data)
     }
   }
-
-const [editedUser,setEditedUser] = React.useState<User>({
-  id: 0,
+const emptyUser:User = {
+  id: "",
   nom: "",
   role: "",
   email: "",
@@ -89,39 +72,20 @@ const [editedUser,setEditedUser] = React.useState<User>({
     lastModified: 0,
     type: "",}
     
-  })
-  const[DeletedUser,setDeletedUser] = React.useState<User>({
-    id: 0,
-    nom: "",
-    role: "",
-    email: "",
-    matricule: 0,
-    prenom: "",
-    date_naissance: "",
-    leui_naissance: "",
-    telephone: 0,
-    image: {
-      name: "",
-      size: 0,
-      lastModified: 0,
-      type: "",}
-  })
+  }
+const [editedUser,setEditedUser] = React.useState<User>(emptyUser)
+const [DeletedUser,setDeletedUser] = React.useState<User>(emptyUser)
 
 const [editVisible,setEditVisible] = React.useState(false);
 const [deleteVisble,setdeleteVisble] = React.useState(false)
 
 function Edit(user:User) {
-  //make a modal to edit the user
   setEditedUser(user);
-  console.log(editedUser);
-  
   setEditVisible(true);
-
 }
 
 function Delete(user:User) {
   setDeletedUser(user)
-  //make a modal to delete the user
   setdeleteVisble(true)
 }
 
@@ -130,13 +94,13 @@ function Delete(user:User) {
   return (
     <div className='m-8 flex flex-col items-center w-4/5'>
       <div onClick={()=>setEditVisible(false)} className='flex items-center justify-between w-full'>
-      <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Les Utilisateurers </h1>
+      <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Gerer Les Utilisateurers</h1>
        <Search change={(val:SearchedObejct) => {setSearch(val);searchData()}}/>
       </div>
       <div className='w-full'>
         <table className="w-full mt-8">
           <thead onClick={()=>setEditVisible(false)}>
-            <tr className="h-16 border-b border-gray-200 font-lg text-gray-400">
+            <tr className="h-16 border-b border-gray-400 font-lg text-gray-400">
               <th className="text-left pl-4 ">Nom</th>
               <th className="text-left pl-4 ">Role</th>
               <th className="text-left pl-4 ">Email</th>
@@ -148,13 +112,13 @@ function Delete(user:User) {
           <tbody className='font-medium'>
             {seachedData && seachedData.map((user:User) => {
               return (
-            <tr className="h-16">
+            <tr className="h-16 border-b border-gray-200">
               <td className="pl-4 ">{user.nom +" "+ user.prenom}</td>
               <td className="pl-4 ">{user.role}</td>
               <td className="pl-4 ">{user.email}</td>
               <td className="pl-4">{user.matricule}</td>
-              <td onClick={()=>{Edit(user)}} className="pl-4 text-blue-600 cursor-pointer">EDIT </td>
-              <td onClick={()=>{Delete(user)}} className="pl-4 text-red-600 cursor-pointer">DELETE </td>
+              <td onClick={()=>{Edit(user)}} className="pl-4 text-blue-600 cursor-pointer">MODIFIE </td>
+              <td onClick={()=>{Delete(user)}} className="pl-4 text-red-600 cursor-pointer">SIPPRIMER </td>
             </tr>
               )})}
             </tbody>

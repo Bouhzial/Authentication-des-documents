@@ -21,7 +21,7 @@ export default function SideNav({name,image_link,options}:Props) {
                 <p className='text-link-text-blue text-xl mt-2 font-bold'>{name}</p>
             </div>
         <div className='flex flex-col mt-14 w-full text-3xl align-middle font-bold cursor-pointer'>
-        {options && options.map((option:linknav) => {
+        {options && options.map((option:linknav,key:number) => {
               return (
                 <a className='text-link-text-blue px-6 hover:scale-x-105 hover:shadow-2xl hover:text-link-gray transition-all hover:bg-blue-900 duration-300 border-b border-gray-400 h-16 w-full bg-link-gray flex items-center justify-center' href={option.link}>
                 {option.name}
