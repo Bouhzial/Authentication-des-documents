@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import Search from './search'
 import {useEffect} from 'react'
+import Useredit from './useredit'
+import UserDelete from './userDelete'
 
 interface User {
+  id: number
   nom: string;
   role: string;
   email: string;
@@ -42,6 +45,7 @@ export default function UserDashBoard({data}:Props) {
  useEffect(() => {
     setSeachedData(data)
   }, [data])
+
   function searchData() {
     console.log(search.serached);
     if(search.serached.length>0){
@@ -69,26 +73,69 @@ export default function UserDashBoard({data}:Props) {
     }
   }
 
+const [editedUser,setEditedUser] = React.useState<User>({
+  id: 0,
+  nom: "",
+  role: "",
+  email: "",
+  matricule: 0,
+  prenom: "",
+  date_naissance: "",
+  leui_naissance: "",
+  telephone: 0,
+  image: {
+    name: "",
+    size: 0,
+    lastModified: 0,
+    type: "",}
+    
+  })
+  const[DeletedUser,setDeletedUser] = React.useState<User>({
+    id: 0,
+    nom: "",
+    role: "",
+    email: "",
+    matricule: 0,
+    prenom: "",
+    date_naissance: "",
+    leui_naissance: "",
+    telephone: 0,
+    image: {
+      name: "",
+      size: 0,
+      lastModified: 0,
+      type: "",}
+  })
+
+const [editVisible,setEditVisible] = React.useState(false);
+const [deleteVisble,setdeleteVisble] = React.useState(false)
+
 function Edit(user:User) {
   //make a modal to edit the user
+  setEditedUser(user);
+  console.log(editedUser);
+  
+  setEditVisible(true);
 
 }
+
 function Delete(user:User) {
+  setDeletedUser(user)
   //make a modal to delete the user
-  
+  setdeleteVisble(true)
 }
 
 
   
   return (
     <div className='m-8 flex flex-col items-center w-4/5'>
-      <div className='flex items-center justify-between w-full'>
+      <div onClick={()=>setEditVisible(false)} className='flex items-center justify-between w-full'>
       <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Les Utilisateurers </h1>
        <Search change={(val:SearchedObejct) => {setSearch(val);searchData()}}/>
       </div>
       <div className='w-full'>
         <table className="w-full mt-8">
-          <thead>
+          <thead onClick={()=>setEditVisible(false)}>
             <tr className="h-16 border-b border-gray-200 font-lg text-gray-400">
               <th className="text-left pl-4 ">Nom</th>
               <th className="text-left pl-4 ">Role</th>
@@ -113,6 +160,8 @@ function Delete(user:User) {
             </tbody>
           </table>
       </div>
+      {editVisible && <Useredit checkvisible={(val) => {setEditVisible(val)}} user={editedUser}/>}
+      {deleteVisble && <UserDelete checkvisible={(val) => {setdeleteVisble(val)}} user={DeletedUser}/>}
     </div>
   )
 }
