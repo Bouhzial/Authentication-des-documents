@@ -5,19 +5,15 @@ import Search from './generic/search'
 import {useEffect} from 'react'
 import Useredit from './editing/useredit'
 import UserDelete from './deleting/userDelete'
-import { User } from '../types'
+import { SearchedObejct, User } from '../types'
+import { api } from '../src/utils/api'
 
 
-interface Props {
-  data: User[];
-}
-interface SearchedObejct {
-  serached: string;
-  type: string;
-}
 
 
-export default function UserDashBoard({data}:Props) {
+
+export default function UserDashBoard() {
+  const data= api.users.getUsers.useQuery().data!;
   
   const [search,setSearch] = React.useState<SearchedObejct>({
     serached:'',
@@ -90,16 +86,15 @@ function Delete(user:User) {
 }
 
 
-  
   return (
     <div className='m-8 flex flex-col items-center w-4/5'>
-      <div onClick={()=>setEditVisible(false)} className='flex items-center justify-between w-full'>
+      <div className='flex items-center justify-between w-full'>
       <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Gerer Les Utilisateurers</h1>
-       <Search change={(val:SearchedObejct) => {setSearch(val);searchData()}}/>
+       <Search fileds={["nom","role","email","matricule"]} change={(val:SearchedObejct) => {setSearch(val);searchData()}}/>
       </div>
       <div className='w-full'>
         <table className="w-full mt-8">
-          <thead onClick={()=>setEditVisible(false)}>
+          <thead>
             <tr className="h-16 border-b border-gray-400 font-lg text-gray-400">
               <th className="text-left pl-4 ">Nom</th>
               <th className="text-left pl-4 ">Role</th>
@@ -117,8 +112,8 @@ function Delete(user:User) {
               <td className="pl-4 ">{user.role}</td>
               <td className="pl-4 ">{user.email}</td>
               <td className="pl-4">{user.matricule}</td>
-              <td onClick={()=>{Edit(user)}} className="pl-4 text-blue-600 cursor-pointer">MODIFIE </td>
-              <td onClick={()=>{Delete(user)}} className="pl-4 text-red-600 cursor-pointer">SIPPRIMER </td>
+              <td onClick={()=>{Edit(user)}} className="pl-4 text-blue-600 cursor-pointer">MODIFIE</td>
+              <td onClick={()=>{Delete(user)}} className="pl-4 text-red-600 cursor-pointer">SIPPRIMER</td>
             </tr>
               )})}
             </tbody>

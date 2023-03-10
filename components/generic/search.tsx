@@ -1,14 +1,13 @@
 import { faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-interface SearchedObejct {
-  serached: string;
-  type: string;
-}
+import { SearchedObejct } from '../../types';
+
 interface Props {
   change: (val: SearchedObejct) => void;
+  fileds: string[];
 }
-export default function Search({change}:Props) {
+export default function Search({change,fileds}:Props) {
     const [clicked,setClicked] = React.useState(false);
     const [Searched,setsearched]= React.useState<SearchedObejct>({
       serached:'',
@@ -29,10 +28,9 @@ export default function Search({change}:Props) {
         <FontAwesomeIcon icon={faSearch} className="h-4 relative text-gray-400 left-10 cursor-pointer"/>
         <input onChange={(e:any)=>handelChange(1,e)} type="text" placeholder="Rechercher Utilisateur" className="focus:border-2 focus:border-gray-900 transition-all w-72 h-12 pl-12 pr-4 border rounded-lg border-link-gray text-gray-400 focus:text-black font-medium  outline-none  "/>
         <select onChange={(e:any)=>handelChange(2,e)} onClick={()=>setClicked(!clicked)} className='focus:border-2 focus:border-gray-900 transition-all w-32 h-12 px-4 border rounded-lg border-link-gray text-gray-400 focus:text-black font-medium  outline-none' >
-          <option value="nom">Nom</option>
-          <option value="role">Role</option>
-          <option value="email">Email</option>
-          <option value="matricule">matricule</option>
+        {fileds.map((field)=>(
+            <option value={field}>{field}</option>
+          ))}
         </select>
         <FontAwesomeIcon icon={faChevronDown}  style={{ pointerEvents: 'none' }} className={`relative  h-4 right-8 ${clicked?'rotate-180 text-black transition-all':"rotate-0 text-gray-400 transition-all"}`}/>
         </div>
