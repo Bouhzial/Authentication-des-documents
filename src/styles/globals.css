@@ -1,19 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-img{
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-user-drag: none;
--webkit-user-drag: none;
-user-select: none;
--moz-user-select: none;
--webkit-user-select: none;
--ms-user-select: none;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
-select{
--webkit-appearance: none;
--moz-appearance: none;
-appearance: none;}
+
+img {
+
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
