@@ -57,23 +57,54 @@ const diplomes = [
                 type: "nkm",
             },
         },
-    }];
+    },{
+        id: "3",
+        signedByDoyen: false,
+        signedByPresident: false,
+        date_obtention: '21/07/2020',
+        student: {
+            id: "1",
+            nom: "Kasmi",
+            prenom: "Rafik",
+            matricule: 202039023985,
+            typeDiplome: "Licence",
+            filiere: "informatique",
+            specialite: "electronic",
+            dipartement: "electronic",
+            email: "bouhzilaahmed2@gmail.com",
+            date_naissance: "21/07/2003",
+            etablissement: "ENSIAS",
+            leui_naissance: "Losandi",
+            telephone: 555,
+            image: {
+                name: "nkmk",
+                size: 1,
+                lastModified: 1,
+                type: "nkm",
+            },
+        },
+    },];
 
     export const t = initTRPC.create();
     export const diplomesRouter = createTRPCRouter({
+
         getDiplomes: publicProcedure.query(({ ctx:any }) => {
             return diplomes;
         }),
-        validerDiplome: t.procedure.input(z.string()).mutation(({ input }) => {
-            //make the signed by Director true for the diplome with the id = input
-            console.log(diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident);
-            
-            
-            diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident = true;
-            console.log(diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident);
-            
 
-            
+        getDiplomesSignedByDoyen: publicProcedure.query(({ ctx:any }) => {
+
+            return diplomes.filter((diplome) => diplome.signedByDoyen);
+        }),
+
+        doyenValiderDiplome: t.procedure.input(z.string()).mutation(({ input }) => {
+
+            diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByDoyen = true;    
+        }),
+
+        validerDiplome: t.procedure.input(z.string()).mutation(({ input }) => {
+
+            diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident = true;
         }),
         refuseDiplome: t.procedure.input(z.string()).mutation(({ input }) => {
             //delete the diplome with the id = input

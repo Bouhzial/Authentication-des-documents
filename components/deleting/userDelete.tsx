@@ -35,8 +35,8 @@ export default function UserDelete({user,checkvisible}:Props) {
             <DeleteInput type='text' placeholder='date de naissance' val={user.date_naissance}  />
             <DeleteInput type='text' placeholder='leui de naissance' val={user.leui_naissance}  />
             <DeleteInput type='text' placeholder='telephone' val={user.telephone.toString()}   />
-            <button onClick={()=>Delete(modifiedUser)}  className='rounded-xl font-semibold w-72 h-16 text-white bg-red-600'>Supprimer</button>
-            <button onClick={change} className='rounded-xl  font-semibold w-72 h-16 text-white bg-blue-800'>Annuler</button>
+            <button onClick={()=>Delete(modifiedUser)}  className='rounded-xl font-semibold w-2/3 h-14 text-white bg-red-600'>Supprimer</button>
+            <button onClick={change} className='rounded-xl  font-semibold w-2/3 h-14 text-white bg-blue-800'>Annuler</button>
         </div>
     </div>
   )

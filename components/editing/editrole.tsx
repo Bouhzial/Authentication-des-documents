@@ -17,14 +17,14 @@ export default function EditRole({options,onChange}:Props) {
        }
    }
   return (
-    <div className='text-black w-96 h-16 mx-4 flex flex-col items-center hover:cursor-pointer' onClick={()=>{setClicked(!clicked)}}>
+    <div className='text-black w-2/3 h-16 mx-4 flex flex-col items-center hover:cursor-pointer' onClick={()=>{setClicked(!clicked)}}>
         <label className=' text-link-text-gray text-center text-lg font-medium'>role</label>
-        <select onChange={handelChange} className='cursor-pointer text-center w-96 h-16 outline-none text-lg font-medium py-3 px-5 rounded-xl shadow-lg pointer-events-auto focus:shadow-xl transition-all '>
+        <select onChange={handelChange} className='cursor-pointer text-center w-full h-16 outline-none text-lg font-medium py-3 px-5 rounded-xl shadow-lg pointer-events-auto focus:shadow-xl transition-all '>
             {options.map((option,index) => (
                 <option className='bg-blue' value={option}>{option}</option>
             ))}
         </select>
-        <FontAwesomeIcon icon={faChevronDown}  style={{ pointerEvents: 'none' }} className={`relative h-6 bottom-2/3 left-40 ${clicked?'rotate-180 transition-all':"rotate-0 transition-all"}`}/>
+        <FontAwesomeIcon icon={faChevronDown}  style={{ pointerEvents: 'none' }} className={`relative h-6 bottom-10  left-1/3 ${clicked?'rotate-180 transition-all':"rotate-0 transition-all"}`}/>
     </div>
   )
 }

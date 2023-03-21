@@ -38,8 +38,8 @@ export default function Useredit({user,checkvisible}:Props) {
             <EditInput type='text' placeholder='date de naissance' val={user.date_naissance}  onChange={(val) => modifiedUser.date_naissance=val} />
             <EditInput type='text' placeholder='leui de naissance' val={user.leui_naissance}  onChange={(val) => modifiedUser.leui_naissance=val} />
             <EditInput type='number' placeholder='telephone' val={user.telephone.toString()}  onChange={(val) => modifiedUser.telephone=parseInt(val)} />
-            <button onClick={()=>modifier(modifiedUser)} className='rounded-xl font-semibold w-72 h-16 text-white bg-blue-800'>Modifie</button>
-            <button onClick={change} className='rounded-xl  font-semibold w-72 h-16 text-white bg-red-600'>Annuler</button>
+            <button onClick={()=>modifier(modifiedUser)} className='rounded-xl font-semibold w-2/3 h-14 text-white bg-blue-800'>Modifie</button>
+            <button onClick={change} className='rounded-xl font-semibold w-2/3 h-14 text-white bg-red-600'>Annuler</button>
         </div>
     </div>
   )

@@ -1,15 +1,14 @@
 import { faCheck, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { log } from 'console';
 import React, { useEffect } from 'react'
-import { api } from '../src/utils/api';
-import { Diplome, SearchedObejct } from '../types';
-import ViewDiplome from './diplome/viewdiplome';
-import Search from './generic/search';
+import { api } from '../../src/utils/api';
+import { Diplome, SearchedObejct } from '../../types';
+import ViewDiplome from '../diplome/viewdiplome';
+import Search from '../generic/search';
 
 export default function DiplomeView() {
-  const data = api.diplomes.getDiplomesSignedByDoyen.useQuery().data!
-  const validate = api.diplomes.validerDiplome.useMutation() 
+  const data = api.diplomes.getDiplomes.useQuery().data!
+  const validate = api.diplomes.doyenValiderDiplome.useMutation() 
   const refusing = api.diplomes.refuseDiplome.useMutation()
   const [view,setView] = React.useState(false)
   const [dipl, setDiplome] = React.useState<Diplome>({
@@ -110,21 +109,21 @@ export default function DiplomeView() {
             </tr>
           </thead>
           <tbody className='font-medium'>
-            {seachedData && seachedData.map((diplome) => (             
+            {seachedData && seachedData.map((diplome) => (         
               <tr className="h-16 text-md border-b border-gray-200">
-              <td className="text-left pl-4 ">{diplome.student.nom+ " " + diplome.student.prenom}</td>
-              <td className="text-left pl-4 ">{diplome.student.typeDiplome}</td>
-              <td className="text-left pl-4 ">{diplome.date_obtention}</td>
-              <td className="text-left pl-4 ">{diplome.student.specialite}</td>
-              <td className="text-left pl-4 ">{diplome.student.dipartement}</td>
-              {diplome.signedByPresident ? <td className='text-left cursor-pointer text-green-900 text-xl'><FontAwesomeIcon icon={faCheck} /><FontAwesomeIcon icon={faCheck} /></td> :<>
-              {diplome.signedByDoyen ? <td className='text-left cursor-pointer text-green-900 text-xl'><FontAwesomeIcon icon={faCheck} /></td> :<></>}
-              <td onClick={()=>{valider(diplome)}} className="text-left text-green-700 cursor-pointer pl-4 ">VALIDER </td>
-              <td onClick={()=>{refuse(diplome)}} className="text-left text-red-600 cursor-pointer pl-4 ">REFUSER </td></>}
-              <td onClick={()=>{see(diplome)}} className="text-left  cursor-pointer pl-4 ">
-                 <FontAwesomeIcon icon={faEye} />
-              </td>
-            </tr>
+                <td className="text-left pl-4 ">{diplome.student.nom+ " " + diplome.student.prenom}</td>
+                <td className="text-left pl-4 ">{diplome.student.typeDiplome}</td>
+                <td className="text-left pl-4 ">{diplome.date_obtention}</td>
+                <td className="text-left pl-4 ">{diplome.student.specialite}</td>
+                <td className="text-left pl-4 ">{diplome.student.dipartement}</td>
+                {diplome.signedByDoyen ? <td className='text-left cursor-pointer pl-4 text-green-900 text-xl'><FontAwesomeIcon icon={faCheck} /></td> :<>
+                <td onClick={()=>{valider(diplome)}} className="text-left text-green-700 cursor-pointer pl-4 ">VALIDER </td>
+                <td onClick={()=>{refuse(diplome)}} className="text-left text-red-600 cursor-pointer pl-4 ">REFUSER </td>
+                </>}
+                <td onClick={()=>{see(diplome)}} className="text-left  cursor-pointer pl-4 ">
+                   <FontAwesomeIcon icon={faEye} />
+                </td>
+              </tr>
            )) }
 
             </tbody>

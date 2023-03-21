@@ -45,7 +45,7 @@ export default function UserForm() {
           <Input type="email" placeholder="Email" onChange={(val:string) => user.email= val} icon={faEnvelope}/>
           <Input type="number" placeholder="Telephone" onChange={(val:string) => user.telephone= val} icon={faPhone}/>
           <Dropdown onChange={(val:string) => user.role= val} options={["Type de Utilisateur","Doyen","Chef Departement"]}/>
-          <button  onClick={Submit} className="col-start-2 col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
+          <button  onClick={Submit} className="col-start-2 hover:bg-blue-900 hover:scale-[102%] transition-all duration-200 col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
     </div>
   )
 }
