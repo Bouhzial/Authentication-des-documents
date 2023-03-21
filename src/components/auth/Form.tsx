@@ -33,7 +33,7 @@ export default function AuthForm () {
 
             <Input className="w-full" placeholder='Email' type='email' icon={faEnvelope} value={email} onChange={(e) => { setEmail(e.target.value) }} ></Input>
 
-            <Input className="w-full" placeholder='Password' type='password' icon={faLock} value={password} onChange={(e) => { setPassword(e.target.value) }} ></Input>
+            <Input className="w-full" placeholder='Password' type='password' icon={faLock} value={password} onChange={(e) => { setPassword(e.target?.value) }} ></Input>
 
             <Link href="#"><p className="text-center text-xs text-link-text-blue mt-3">Mot de passe oublié ?</p></Link>
 
