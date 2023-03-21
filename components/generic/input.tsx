@@ -20,7 +20,7 @@ const [value,setValue] = React.useState<string>('')
        }
    }
   return (
-    <div className='w-96 h-16 text-black text-lg font-medium m-4'>
+    <div className='col-span-2 w-96 h-16 text-black text-lg font-medium m-4'>
         <input type={type} onChange={handelChange}  placeholder={placeholder} className='w-96 outline-none text-lg font-medium h-16 py-3 px-5 rounded-xl shadow-lg pointer-events-auto  focus:shadow-xl transition-all '/>
         <FontAwesomeIcon icon={icon} className='cursor-pointer relative h-6 bottom-2/3 left-80'/>
     </div>

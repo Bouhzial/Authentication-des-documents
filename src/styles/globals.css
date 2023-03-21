@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 img{
-
 user-drag: none;
 -webkit-user-drag: none;
 user-select: none;

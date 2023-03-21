@@ -17,7 +17,7 @@ export default function Dropdown({options,onChange}:Props) {
        }
    }
   return (
-    <div className='text-black w-96 h-16 mx-4 hover:cursor-pointer' onClick={()=>{setClicked(!clicked)}}>
+    <div className='col-span-2 text-black w-96 h-16 mx-4 hover:cursor-pointer' onClick={()=>{setClicked(!clicked)}}>
         <select onChange={handelChange} className='cursor-pointer w-96 h-16 outline-none text-lg font-medium py-3 px-5 rounded-xl shadow-lg pointer-events-auto focus:shadow-xl transition-all '>
             {options.map((option,index) => (
                 index === 0 ? <option disabled selected>{option}</option> :
