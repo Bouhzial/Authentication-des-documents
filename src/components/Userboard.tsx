@@ -34,7 +34,9 @@ export default function UserDashBoard () {
           return user.nom.toLowerCase().includes(search.serached.toLowerCase()) || user.prenom.toLowerCase().includes(search.serached.toLowerCase())
         }
         else if (search.type == 'role') {
-          return user.role.toLowerCase().includes(search.serached.toLowerCase())
+            if( getRole(user.role_id).toLowerCase().includes(search.serached.toLowerCase())){
+              return user
+            }
         }
         else if (search.type == 'email') {
           return user.email.toLowerCase().includes(search.serached.toLowerCase())
@@ -55,7 +57,7 @@ export default function UserDashBoard () {
   const emptyUser: User = {
     id: "",
     nom: "",
-    role: "",
+    role_id: 0,
     email: "",
     matricule: 0,
     prenom: "",
@@ -85,7 +87,21 @@ export default function UserDashBoard () {
     setDeletedUser(user)
     setdeleteVisble(true)
   }
-
+  function getRole(id:number){
+    if(id==1){
+      return "recteur"
+    }
+    else if(id==2){
+      return "chef departement"
+    }
+    else if(id==3){
+      return "doyen"
+    }
+    else if(id==4){
+      return "etudiant"
+    }
+    return "inconnu"
+  }
 
   return (
     <div className='m-8 flex flex-col items-center w-4/5'>
@@ -110,7 +126,7 @@ export default function UserDashBoard () {
               return (
                 <tr className="h-16 border-b border-gray-200">
                   <td className="pl-4 ">{user.nom + " " + user.prenom}</td>
-                  <td className="pl-4 ">{user.role}</td>
+                  <td className="pl-4 ">{getRole(user.role_id)}</td>
                   <td className="pl-4 ">{user.email}</td>
                   <td className="pl-4">{user.matricule}</td>
                   <td onClick={() => { Edit(user) }} className="pl-4 text-blue-600 cursor-pointer">MODIFIE</td>

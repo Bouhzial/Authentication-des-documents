@@ -16,6 +16,7 @@ export default function AuthForm () {
         const result = await signIn("credentials", {
             email,
             password,
+            //sgm ymaha
             role: 1,
             redirect: false,
         });

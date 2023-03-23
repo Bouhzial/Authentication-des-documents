@@ -1,23 +1,28 @@
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { devNull } from 'os';
 import React from 'react'
 
 
 interface Props {
-    className?: string;
     type: string;
     placeholder: string;
-    icon: IconDefinition;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    value?: string | number;
+    icon: any;
+    onChange: (val: string) => void;
 }
-export default function Input ({ className, type, placeholder, icon, onChange, value }: Props) {
+export default function Input({type,placeholder,icon,onChange}:Props) {
 
-    return (
-        <div className={`h-16 text-red text-lg font-medium relative ${className || 'w-96'}`}>
-            <input type={type} onChange={onChange} placeholder={placeholder} value={value} className='w-full outline-none text-lg font-medium h-16 py-3 px-5  rounded-2xl shadow-lg pointer-events-auto  focus:shadow-xl transition-all' />
-            <FontAwesomeIcon icon={icon} className='absolute cursor-pointer h-6 top-1/3 right-5' />
-        </div>
-    )
+const [value,setValue] = React.useState<string>('')
+   function handelChange(e:any){
+       const val = e.target.value
+       if(val){
+           setValue(val)
+           onChange(val)
+       }
+   }
+  return (
+    <div className='col-span-2 w-2/3 h-16 text-black text-lg font-medium m-4'>
+        <input type={type} onChange={handelChange}  placeholder={placeholder} className='w-full outline-none text-lg font-medium h-16 py-3 px-5 rounded-xl shadow-lg pointer-events-auto  focus:shadow-xl transition-all '/>
+        <FontAwesomeIcon icon={icon} className='cursor-pointer relative h-6 bottom-2/3 left-[85%]'/>
+    </div>
+  )
 }

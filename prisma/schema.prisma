@@ -12,6 +12,7 @@ datasource db {
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
+    
 }
 
 // model Example {
@@ -54,18 +55,78 @@ model Session {
 }
 
 model User {
-    id           Int       @id @default(autoincrement())
-    name         String?
-    email        String?   @unique
-    phone_number String?   @unique
+    id           Int      @id @default(autoincrement())
+    nom          String
+    prenom       String
+    email        String  @unique
+    telephone    Int  @unique
+    matricule    Int @unique
     password     String
-    image        String?
+    date_naissance String
+    leui_naissance String
+    etablissement_id  Int
+    etablissement  Etablissement @relation(fields: [etablissement_id], references: [id])
+    
     accounts     Account[]
     sessions     Session[]
     role_id      Int
-    role         Role      @relation(fields: [role_id], references: [id], onDelete: Cascade)
+    role         Role      @relation(fields: [role_id], references: [id])
+    
+    filiere String?
+    faculty String?
+    facult Faculty? @relation(fields: [faculty], references: [nom])
+    departement String ?
+    departemen Departement? @relation(fields: [departement], references: [nom])
+    specialite String?
+    typeDiplome String?
+    diplomes Diplome[]
+    image      Image?
 }
 
+
+model Etablissement{
+    id Int @id @default(autoincrement())
+    nom String
+    adresse String
+    telephone Int
+    email String
+    User User[]
+    department Departement[]
+    faculty Faculty[]
+}
+
+model Faculty{
+    nom String @unique
+    etablissement_id Int
+    etablissement Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+    User User[]
+}
+model Departement{
+    nom String @unique
+    etablissement_id Int
+    etablissement Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+    User User[]
+    }
+model Image{
+    id Int @id @default(autoincrement())
+    user User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id Int?  @unique
+    name String
+    size Int
+    lastModified Int
+    type String
+    }
+
+model Diplome {
+    id String @id @default(cuid())
+    type String
+    date_obtention String
+    signedByRector Boolean
+    signedByDoyen Boolean
+    student_id Int
+    student User @relation(fields: [student_id], references: [id], onDelete: Cascade)
+}
+  
 model VerificationToken {
     identifier String
     token      String   @unique

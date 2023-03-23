@@ -6,7 +6,7 @@ type Props = {
     children: JSX.Element
 }
 
-const options = [{ name: "Gerer Utilisateurs", link: "./gerer_users" }, { name: "Creer Utilisateur", link: "./create_users" }, { name: "Verifier Diplomes", link: "verifier_diplome" }]
+const options = [{ name: "Gerer Utilisateurs", link: "superadmin/gerer_users" }, { name: "Creer Utilisateur", link: "superadmin/create_users" }, { name: "Verifier Diplomes", link: "superadmin/verifier_diplome" }]
 
 export default function SuperAdminLayout ({ children }: Props) {
     return (

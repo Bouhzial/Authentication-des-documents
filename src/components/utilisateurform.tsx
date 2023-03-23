@@ -4,12 +4,11 @@ import React from 'react'
 import Dropdown from './generic/dropdown'
 import CircularImageInput from './generic/imageinput'
 import Input from './generic/input'
-import { uuid } from 'uuidv4';
 import { api } from '../utils/api'
 
 
 export default function UserForm () {
-  const mutation = api.users.AddUser.useMutation();
+  const mutation  = api.users.AddUser.useMutation();
   const [user, setUser] = React.useState<any>({
     id: 0,
     nom: '',
@@ -21,15 +20,26 @@ export default function UserForm () {
     role: '',
     matricule: 0,
     image: null,
+    departement: '', 
+    faculty: ''
   })
-  function Submit () {
-    user.id = uuid();
-    console.log(user.id)
+  async function  Submit () {
     user.matricule = parseInt(user.matricule);
     user.telephone = parseInt(user.telephone);
-    user.image = { name: user.image.name, size: user.image.size, lastModified: user.image.lastModified, type: user.image.type };
-    //api call to call user
-    mutation.mutate(user);
+    user.image = { name: user.image?.name, size: user.image?.size, lastModified: user.image?.lastModified, type: user.image?.type };
+    if(user.role === "Doyen") {
+      user.departement = "";
+      if(user.faculty != "") {
+        mutation.mutate(user);
+      }
+    }
+    if(user.role === "Chef Departement") {
+      if(user.faculty != "" && user.departement != "") {
+        mutation.mutate(user);
+      }
+    }
+   
+    
     //send email to user to configute his password
 
   }
@@ -45,6 +55,8 @@ export default function UserForm () {
       <Input type="email" placeholder="Email" onChange={(val: string) => user.email = val} icon={faEnvelope} />
       <Input type="number" placeholder="Telephone" onChange={(val: string) => user.telephone = val} icon={faPhone} />
       <Dropdown onChange={(val: string) => user.role = val} options={["Type de Utilisateur", "Doyen", "Chef Departement"]} />
+      <Dropdown onChange={(val: string) => user.faculty = val} options={["Faculty","FST", "FSEG", "FSF"]} />
+      <Dropdown onChange={(val: string) => user.departement = val} options={["Departement", "Informatique", "Electronique", "Mecanique"]} />  
       <button onClick={Submit} className="col-start-2 col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
     </div>
   )

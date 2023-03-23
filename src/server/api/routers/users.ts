@@ -1,3 +1,4 @@
+import { Prisma, PrismaClient } from "@prisma/client";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -14,21 +15,59 @@ const users =
 //connect to database and use real data
 
 export const t = initTRPC.create();
-export const userRouter = createTRPCRouter({
+export const userRouter:any = createTRPCRouter({
 
-  getUsers: publicProcedure.query(() => {
+  getUsers: publicProcedure.query(async () => {
+    const users = await prisma?.user.findMany()
+    console.log(users);
     return users;
   }),
 
-  deleteUserById: t.procedure.input(z.string()).mutation(({ input }) => {
-    console.log(input);
-
-    //deletes user form database based on id
-    users.splice(users.findIndex((user) => user.id === input), 1);
-
+ deleteUserById: t.procedure.input(z.number()).mutation(async({ input }) => {
+  console.log('deleting');
+  console.log("id: ",input);
+   await prisma?.user.delete({
+      where: {
+        id: input
+      }
+    })
+    console.log('deleted');
   }),
+
+
   modifyUser: t.procedure.input(z.object({
-    id: z.string(),
+    id: z.number(),
+    nom: z.string(),
+    prenom: z.string(),
+    date_naissance: z.string(),
+    leui_naissance: z.string(),
+    matricule: z.number(),
+    email: z.string(),
+    role_id: z.number(),
+    telephone: z.number(),
+  })).mutation(async({ input }) => {
+      console.log('modifying');
+      await prisma?.user.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          nom: input.nom,
+          prenom: input.prenom,
+          date_naissance: input.date_naissance,
+          leui_naissance: input.leui_naissance,
+          matricule: input.matricule,
+          email: input.email,
+          role_id: input.role_id,
+          telephone: input.telephone,
+        }
+      })
+  
+      console.log('modified');
+  }),
+
+
+  AddUser : t.procedure.input(z.object({
     nom: z.string(),
     prenom: z.string(),
     date_naissance: z.string(),
@@ -37,28 +76,44 @@ export const userRouter = createTRPCRouter({
     email: z.string(),
     role: z.string(),
     telephone: z.number(),
+    faculty: z.string(),
+    departement: z.string(),
     image: z.object({ name: z.string(), size: z.number(), lastModified: z.number(), type: z.string(), }),
-  })).mutation(({ input }) => {
-    //modifies the user in the database based on id
-    console.log(input);
-    users[users.findIndex((user) => user.id === input.id)] = input;
-
-  }),
-
-
-  AddUser: t.procedure.input(z.object({
-    id: z.string(),
-    nom: z.string(),
-    prenom: z.string(),
-    date_naissance: z.string(),
-    leui_naissance: z.string(),
-    matricule: z.number(),
-    email: z.string(),
-    role: z.string(),
-    telephone: z.number(),
-    image: z.object({ name: z.string(), size: z.number(), lastModified: z.number(), type: z.string(), }),
-  })).mutation(({ input }) => {
-    //add user to database
-    users.push(input)
-  }),
+  })).mutation(async({ input }) => { 
+    console.log('adding');
+       
+    let n
+    input.role=='Doyen'?n=3:n=2
+    await prisma?.user.create({
+      data:{
+        nom: input.nom,
+        email: input.email,
+        prenom: input.prenom,
+        date_naissance: input.date_naissance,
+        leui_naissance: input.leui_naissance,
+        telephone: input.telephone,
+        matricule: input.telephone,
+        etablissement_id: 1,
+        password: "",
+        role_id: n,
+        faculty: input.faculty,
+        departement: input.departement,
+      }
+    })
+    const User = await prisma?.user.findFirst({
+      where: {
+        email: input.email
+      }
+    })
+    await prisma?.image.create({
+      data: {
+        user_id: User!.id,
+        name: input.image.name,
+        size: input.image.size,
+        lastModified: input.image.lastModified,
+        type: input.image.type,
+      }
+      })
+      console.log('added');
+    }),
 });
