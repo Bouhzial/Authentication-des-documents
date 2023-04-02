@@ -3,8 +3,9 @@ import AuthForm from '../components/auth/Form';
 interface Props {
     image: string;
     subText: string;
+    role_id: number;
 }
-export default function AuthLayout ({ image, subText }: Props) {
+export default function AuthLayout ({ image, subText ,role_id }: Props) {
     return (
         <div className='flex flex-col w-full min-h-screen max-w-[1800px] mx-auto md:flex-row'>
 
@@ -17,7 +18,7 @@ export default function AuthLayout ({ image, subText }: Props) {
                     <h1 className='font-semibold text-5xl'>Bienvenue</h1>
                     <p className='text-sm font-light'>{subText}</p>
                 </div>
-                <AuthForm />
+                <AuthForm role_id={role_id} />
             </div>
         </div >
     )

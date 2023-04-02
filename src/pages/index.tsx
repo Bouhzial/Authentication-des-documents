@@ -2,8 +2,8 @@ import React from 'react'
 import SideNav from '../components/sidenav'
 import UserDashBoard from '../components/Userboard'
 import UserForm from '../components/utilisateurform'
-import { api } from '../utils/api';
 import { useSession } from 'next-auth/react';
+import DiplomeView from '../components/diplomeview';
 
 
 export default function index () {

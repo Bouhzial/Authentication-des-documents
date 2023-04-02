@@ -19,50 +19,49 @@ const redirectToDashboardByRole = (roleId?: number): string => {
     }
 }
 
-// export default withAuth(
-//     function middleware (req) {
-//         // some actions here
-//         if (req.nextauth.token?.role) {
-//             redirectToDashboardByRole(req.nextauth.token?.role)
-//         }
-//     },
-//     {
-//         callbacks: {
-//             authorized: ({ req, token }) => {
-//                 const path = req.nextUrl.pathname;
-//                 console.log("nikmok", token)
+export default withAuth(
+    function middleware (req) {
+        // some actions here
+        if (req.nextauth.token?.role) {
+            redirectToDashboardByRole(req.nextauth.token?.role)
+        }
+    },
+    {
+        callbacks: {
+            authorized: ({ req, token }) => {
+                const path = req.nextUrl.pathname;
 
-//                 // Check if the middleware is processing the
-//                 // route which requires a specific role
-//                 if (path.startsWith("/superadmin")) {
-//                     return token?.role === Role.superAdmin;
-//                 }
-//                 if (path.startsWith("/issuer")) {
-//                     return token?.role === Role.issuer;
-//                 }
-//                 if (path.startsWith("/verificator")) {
-//                     return token?.role === Role.verificator;
-//                 }
-//                 if (path.startsWith("/student")) {
-//                     return token?.role === Role.student;
-//                 }
+                // Check if the middleware is processing the
+                // route which requires a specific role
+                if (path.startsWith("/superadmin")) {
+                    return token?.role === Role.superAdmin;
+                }
+                if (path.startsWith("/issuer")) {
+                    return token?.role === Role.issuer;
+                }
+                if (path.startsWith("/verificator")) {
+                    return token?.role === Role.verificator;
+                }
+                if (path.startsWith("/student")) {
+                    return token?.role === Role.student;
+                }
 
-//                 // By default return true only if the token is not null
-//                 // (this forces the users to be signed in to access the page)
-//                 return false;
-//             }
-//         }
-//     })
+                // By default return true only if the token is not null
+                // (this forces the users to be signed in to access the page)
+                return false;
+            }
+        }
+    })
 
-// // Define paths for which the middleware will run
-// export const config = {
-//     matcher: [
-//         "/superadmin/:path*",
-//         "/issuer/:path*",
-//         "/verificator/:path*",
-//         "/student/:path*"
-//     ]
-// }
+// Define paths for which the middleware will run
+export const config = {
+    matcher: [
+        "/superadmin/:path*",
+        "/issuer/:path*",
+        "/verificator/:path*",
+        "/student/:path*"
+    ]
+}
 
 const { superAdmin, issuer, verificator, student } = Role;
 const protectedPaths = [

@@ -5,6 +5,8 @@ import Dropdown from './generic/dropdown'
 import CircularImageInput from './generic/imageinput'
 import Input from './generic/input'
 import { api } from '../utils/api'
+import emailjs from 'emailjs-com';
+import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 
 
 export default function UserForm () {
@@ -24,25 +26,32 @@ export default function UserForm () {
     faculty: ''
   })
   async function  Submit () {
+    let id = 0;
     user.matricule = parseInt(user.matricule);
     user.telephone = parseInt(user.telephone);
     user.image = { name: user.image?.name, size: user.image?.size, lastModified: user.image?.lastModified, type: user.image?.type };
     if(user.role === "Doyen") {
       user.departement = "";
       if(user.faculty != "") {
-        mutation.mutate(user);
+        const User = await mutation.mutateAsync(user);
+        id = User.id;
       }
     }
     if(user.role === "Chef Departement") {
       if(user.faculty != "" && user.departement != "") {
-        mutation.mutate(user);
+        const User = await mutation.mutateAsync(user);
+        id = User.id;
+      }  
       }
-    }
-   
-    
-    //send email to user to configute his password
-
+    emailjs.send("service_occzbjn","template_wt747y9",{
+      email: user.email,
+      name: user.nom,
+      id: id
+      },'QId1k8EKVDSE9fRVS');
+    console.log("sent to ",user.email);
   }
+  
+
   return (
     <div className="w-4/5 p-8 place-items-center grid grid-cols-4 justify-center items-center h-screen overflow-y-scroll scrollbar scrollbar-thumb-slate-600 scroll-smooth">
       <h1 className="text-3xl text-center col-span-4 pt-4 mt-10 font-bold text-link-text-blue">Ajouter Utilisateur</h1>

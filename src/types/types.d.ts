@@ -20,8 +20,9 @@ export interface User {
   export interface Diplome{
     id: string;
     signedByDoyen: boolean;
-    signedByPresident: boolean;
+    signedByRector: boolean;
     student : Student;
+    student_id: number;
     date_obtention: string;
     //add the other diplome fields
   }
@@ -32,7 +33,7 @@ export interface User {
     prenom: string;
     matricule: number;
     filiere: string;
-    dipartement: string;
+    departement: string;
     typeDiplome: string;
     specialite: string;
     email: string;

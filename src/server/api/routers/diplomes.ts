@@ -61,22 +61,36 @@ const diplomes = [
 
     export const t = initTRPC.create();
     export const diplomesRouter = createTRPCRouter({
-        getDiplomes: publicProcedure.query(({ ctx:any }) => {
-            return diplomes;
+        getDiplomes: publicProcedure.query(async() => {
+            const diplomes = await prisma?.diplome.findMany();
+            const students = await prisma?.user.findMany({where: {role_id: 4}});
+            const data = diplomes!.map((diplome) => {
+                const student = students!.find((student) => student.id == diplome.student_id)
+                return {
+                  ...diplome,
+                  student: student
+                }
+              })
+            return data;
         }),
-        validerDiplome: t.procedure.input(z.string()).mutation(({ input }) => {
-            //make the signed by Director true for the diplome with the id = input
-            console.log(diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident);
-            
-            
-            diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident = true;
-            console.log(diplomes[diplomes.findIndex((diplome) => diplome.id === input)]!.signedByPresident);
-            
 
+        validerDiplome: t.procedure.input(z.string()).mutation(async({ input }) => {
             
+            await prisma?.diplome.update({
+                where: {
+                    id: input
+                },
+                data: {
+                    signedByRector: true
+                }
+            })
         }),
-        refuseDiplome: t.procedure.input(z.string()).mutation(({ input }) => {
-            //delete the diplome with the id = input
-            diplomes.splice(diplomes.findIndex((diplome) => diplome.id === input), 1);
+        refuseDiplome: t.procedure.input(z.string()).mutation(async({ input }) => {
+            await prisma?.diplome.delete({
+                where: {
+                    id: input
+                }
+            })
+
         }),
     });

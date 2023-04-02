@@ -104,13 +104,13 @@ export default function UserDashBoard () {
   }
 
   return (
-    <div className='m-8 flex flex-col items-center w-4/5'>
+    <div className='p-8 flex h-screen flex-col items-center w-4/5  '>
       <div className='flex items-center justify-between w-full'>
         <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Gerer Les Utilisateurers</h1>
         <Search fileds={["nom", "role", "email", "matricule"]} change={(val: SearchedObejct) => { setSearch(val); searchData() }} />
       </div>
-      <div className='w-full'>
-        <table className="w-full mt-8">
+      <div className='w-full mt-8 h-[90%] overflow-y-scroll scrollbar-thin scrollbar-track-link-text-blue'>
+        <table className="w-full   ">
           <thead>
             <tr className="h-16 border-b border-gray-400 font-lg text-gray-400">
               <th className="text-left pl-4 ">Nom</th>
@@ -121,7 +121,7 @@ export default function UserDashBoard () {
               <th />
             </tr>
           </thead>
-          <tbody className='font-medium'>
+          <tbody className='font-medium '>
             {seachedData && seachedData.map((user: User) => {
               return (
                 <tr className="h-16 border-b border-gray-200">

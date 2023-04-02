@@ -17,18 +17,18 @@ export default async (prisma: PrismaClient) => {
                 nom: "",
                 etablissement_id: 1,
             },
-            // {
-            //     nom: "FST",
-            //     etablissement_id: 1,
-            // },
-            // {
-            //     nom: "FSEG",
-            //     etablissement_id: 1,
-            // },
-            // {
-            //     nom: "FSE",
-            //     etablissement_id: 1,
-            // }
+            {
+                nom: "FST",
+                etablissement_id: 1,
+            },
+            {
+                nom: "FSEG",
+                etablissement_id: 1,
+            },
+            {
+                nom: "FSE",
+                etablissement_id: 1,
+            }
         ]
 })
    await prisma.departement.createMany({

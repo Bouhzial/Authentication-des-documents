@@ -1,18 +1,8 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { hashSync } from "bcrypt";
 
-
-//dummy data
-const users =
-  [
-    { id: '1', nom: "Bouhzila", prenom: "Ahmed", date_naissance: "21/07/2003", leui_naissance: "Ain Ouserra", matricule: 202039023985, email: "bouhzilaahmed@gmail.com", role: "rajl", telephone: 555, image: { name: "nkmk", size: 1, lastModified: 1, type: "nkm" } },
-    { id: '2', nom: "Kasmi", prenom: "Rafik", date_naissance: "18/07/2002", leui_naissance: "Ouserra", matricule: 123456789, email: "rafikkasmi@gmail.com", role: "chef departement", telephone: 555, image: { name: "nkmk", size: 1, lastModified: 1, type: "nkm" } },
-    { id: '3', nom: "Hichem", prenom: "medha", date_naissance: "18/07/2002", leui_naissance: "Ouserra", matricule: 123456789, email: "3tay@gmail.com", role: "doyen", telephone: 555, image: { name: "nkmk", size: 1, lastModified: 1, type: "nkm" } },
-    { id: '4', nom: "Haroon", prenom: "kesselha", date_naissance: "18/07/2002", leui_naissance: "Ouserra", matricule: 123456789, email: "hdmii@gmail.com", role: "doyen", telephone: 555, image: { name: "nkmk", size: 1, lastModified: 1, type: "nkm" } }
-  ]
-//connect to database and use real data
 
 export const t = initTRPC.create();
 export const userRouter:any = createTRPCRouter({
@@ -21,6 +11,15 @@ export const userRouter:any = createTRPCRouter({
     const users = await prisma?.user.findMany()
     console.log(users);
     return users;
+  }),
+
+  getUserById: publicProcedure.input(z.number()).mutation(async ({input}) => {
+    const user = await prisma?.user.findFirst({
+      where: {
+        id: input
+      }
+    })
+    return {nom:user?.nom,password:user?.password};
   }),
 
  deleteUserById: t.procedure.input(z.number()).mutation(async({ input }) => {
@@ -84,7 +83,7 @@ export const userRouter:any = createTRPCRouter({
        
     let n
     input.role=='Doyen'?n=3:n=2
-    await prisma?.user.create({
+    const user = await prisma?.user.create({
       data:{
         nom: input.nom,
         email: input.email,
@@ -92,7 +91,7 @@ export const userRouter:any = createTRPCRouter({
         date_naissance: input.date_naissance,
         leui_naissance: input.leui_naissance,
         telephone: input.telephone,
-        matricule: input.telephone,
+        matricule: input.matricule,
         etablissement_id: 1,
         password: "",
         role_id: n,
@@ -105,6 +104,8 @@ export const userRouter:any = createTRPCRouter({
         email: input.email
       }
     })
+    if(input.image.name!=""){
+    
     await prisma?.image.create({
       data: {
         user_id: User!.id,
@@ -113,7 +114,47 @@ export const userRouter:any = createTRPCRouter({
         lastModified: input.image.lastModified,
         type: input.image.type,
       }
+      })}
+      console.log('added')
+      return User;
+    }),
+
+    ConfigPassword: t.procedure.input(z.object({
+      id: z.number(),
+      password: z.string(),
+    })).mutation(async({ input }) => {
+      const pass = hashSync(input.password, 10)
+      await prisma?.user.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          password: pass,
+        }
       })
-      console.log('added');
+    }),
+    removePassword: t.procedure.input(z.string()).mutation(async({ input }) => {
+      const pass = ''
+      await prisma?.user.update({
+        where: {
+          email: input,
+        },
+        data: {
+          password: pass,
+        }
+      })
+    }),
+    checkEmailValidity: t.procedure.input(z.string()).mutation(async({ input }) => {
+      const user = await prisma?.user.findFirst({
+        where: {
+          email: input,
+        }
+      })
+      if(user){
+        return user.id
+      }else{
+        return 0
+      }
     }),
 });
+
