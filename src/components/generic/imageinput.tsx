@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { forwardRef, Ref, useImperativeHandle, useState } from "react";
 
 type Props = {
   onChange: (file: File) => void;
 };
 
-function CircularImageInput({onChange }: Props) {
+export interface RefMethods {
+  resetPreview: () => void
+}
+
+export const CircularImageInput = forwardRef(({ onChange }: Props, ref: Ref<RefMethods>) => {
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -16,6 +21,12 @@ function CircularImageInput({onChange }: Props) {
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    resetPreview () {
+      setPreviewUrl(null)
+    }
+  }));
 
   return (
     <div className=" col-span-4 flex flex-col items-center justify-center">
@@ -48,6 +59,5 @@ function CircularImageInput({onChange }: Props) {
       />
     </div>
   );
-}
+})
 
-export default CircularImageInput;

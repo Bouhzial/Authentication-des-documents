@@ -1,16 +1,14 @@
+import { Image, User as UserType } from "@prisma/client";
 import { DefaultSession, DefaultUser } from "next-auth";
+import { Role } from './types'
 
 
-export enum Role {
-  superAdmin = 1,
-  issuer = 2,
-  verificator = 3,
-  student = 4
-}
 //adding role to the data returned by next auth
-interface IUser extends DefaultUser {
-  role?: Role;
+interface IUser extends UserType {
+  role: Role;
+  image: Image | null;
 }
+
 
 declare module "next-auth/jwt" {
   interface JWT extends IUser { }
@@ -20,10 +18,19 @@ declare module "next-auth" {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
-  interface User extends IUser { }
+  interface User extends IUser {
+    id: number;
+    image: Image | null;
+  }
 
   interface Session {
-    user?: User & DefaultSession["user"];
+    user?: {
+      id: number;
+      nom: string
+      prenom: string
+      image: Image | null;
+      role: Role
+    };
   }
   // interface Session {
   //   user?: {

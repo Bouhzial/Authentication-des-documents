@@ -4,7 +4,7 @@ import { env } from "../env/server.mjs";
 
 declare global {
   // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
+  var prisma: PrismaClient;
 }
 
 export const prisma =

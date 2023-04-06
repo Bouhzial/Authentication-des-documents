@@ -11,23 +11,23 @@ interface Props {
   checkvisible: (val: boolean) => void
 }
 export default function Useredit ({ user, checkvisible }: Props) {
-  const mutation = api.users.modifyUser.useMutation()
+  const mutation = api.recteur.users.modifyUser.useMutation()
   const [modifiedUser, setModifiedUser] = React.useState<User>(user)
-  const [role,setrole]= React.useState<string>('')
+  const [role, setrole] = React.useState<string>('')
   function modifier (Muser: User) {
-    user=Muser
-    user.role_id=getroleId(role)
+    user = Muser
+    user.role_id = getroleId(role)
     mutation.mutate(user)
     checkvisible(false)
   }
   function change () {
     checkvisible(false)
   }
-  function getroleId(role:string){
-    if(role==="Doyen"){
+  function getroleId (role: string) {
+    if (role === "Doyen") {
       return 1
     }
-    else{
+    else {
       return 2
     }
   }

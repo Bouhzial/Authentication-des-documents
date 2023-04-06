@@ -1,5 +1,5 @@
 import { withAuth } from "next-auth/middleware"
-import { Role } from "./types/next-auth.d";
+import { Role } from "./types/types";
 import { getToken } from "next-auth/jwt";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
@@ -7,7 +7,7 @@ const redirectToDashboardByRole = (roleId?: number): string => {
     const { superAdmin, issuer, verificator, student } = Role;
     switch (roleId) {
         case superAdmin:
-            return "/superadmin"
+            return "/superadmin/gerer_users"
         case issuer:
             return "/issuer"
         case verificator:
@@ -19,50 +19,6 @@ const redirectToDashboardByRole = (roleId?: number): string => {
     }
 }
 
-export default withAuth(
-    function middleware (req) {
-        // some actions here
-        if (req.nextauth.token?.role) {
-            redirectToDashboardByRole(req.nextauth.token?.role)
-        }
-    },
-    {
-        callbacks: {
-            authorized: ({ req, token }) => {
-                const path = req.nextUrl.pathname;
-
-                // Check if the middleware is processing the
-                // route which requires a specific role
-                if (path.startsWith("/superadmin")) {
-                    return token?.role === Role.superAdmin;
-                }
-                if (path.startsWith("/issuer")) {
-                    return token?.role === Role.issuer;
-                }
-                if (path.startsWith("/verificator")) {
-                    return token?.role === Role.verificator;
-                }
-                if (path.startsWith("/student")) {
-                    return token?.role === Role.student;
-                }
-
-                // By default return true only if the token is not null
-                // (this forces the users to be signed in to access the page)
-                return false;
-            }
-        }
-    })
-
-// Define paths for which the middleware will run
-export const config = {
-    matcher: [
-        "/superadmin/:path*",
-        "/issuer/:path*",
-        "/verificator/:path*",
-        "/student/:path*"
-    ]
-}
-
 const { superAdmin, issuer, verificator, student } = Role;
 const protectedPaths = [
     { path: "/superadmin", role: superAdmin },
@@ -71,7 +27,8 @@ const protectedPaths = [
     { path: "/student", role: student }
 ];
 const guestPaths = [
-    "/auth"
+    "/auth",
+    "/config_pass"
 ];
 export async function middleware (request: NextRequest, _next: NextFetchEvent) {
     const { pathname } = request.nextUrl;
@@ -93,6 +50,7 @@ export async function middleware (request: NextRequest, _next: NextFetchEvent) {
     const matchesGuestPaths = guestPaths.some((path) =>
         pathname.startsWith(path)
     );
+
     if (matchesGuestPaths) {
         const token = await getToken({ req: request });
         if (token) {
