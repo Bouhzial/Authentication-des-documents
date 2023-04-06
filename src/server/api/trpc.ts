@@ -66,10 +66,11 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
+import { Role } from '../../types/types'
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({ shape }) {
+  errorFormatter ({ shape }) {
     return shape;
   },
 });
@@ -112,6 +113,20 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+const enforceUserHasRole = (role: Role) => t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user || ctx.session.user.role != role) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+
+
 /**
  * Protected (authed) procedure
  *
@@ -122,3 +137,17 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+/**
+ * Procedures on roles
+ *
+ */
+const { superAdmin, issuer, verificator, student } = Role
+
+export const recteurProcedure = t.procedure.use(enforceUserHasRole(superAdmin));
+
+export const issuerProcedure = t.procedure.use(enforceUserHasRole(issuer));
+
+export const verificatorProcedure = t.procedure.use(enforceUserHasRole(verificator));
+
+export const studentProcedure = t.procedure.use(enforceUserHasRole(student));

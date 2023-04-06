@@ -1,51 +1,114 @@
 import { faCalendar, faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faLocationDot } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Dropdown from './generic/dropdown'
-import CircularImageInput from './generic/imageinput'
+import { CircularImageInput, RefMethods } from './generic/imageinput'
 import Input from './generic/input'
-import { uuid } from 'uuidv4';
 import { api } from '../utils/api'
+import { User } from '../types/types'
+import toast from 'react-hot-toast';
+import emailjs from 'emailjs-com';
+import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 
+
+
+const emptyDefaultUser: User = {
+  nom: '',
+  prenom: '',
+  date_naissance: '',
+  leui_naissance: '',
+  email: '',
+  telephone: '',
+  role_id: 0,
+  matricule: '',
+  image: {
+    name: "",
+    size: 0,
+    lastModified: "",
+    type: "",
+  },
+  departement_id: 0,
+  faculty_id: 0,
+}
 
 export default function UserForm () {
-  const mutation = api.users.AddUser.useMutation();
-  const [user, setUser] = React.useState<any>({
-    id: 0,
-    nom: '',
-    prenom: '',
-    date_naissance: '',
-    leui_naissance: '',
-    email: '',
-    telephone: 0,
-    role: '',
-    matricule: 0,
-    image: null,
-  })
-  function Submit () {
-    user.id = uuid();
-    console.log(user.id)
-    user.matricule = parseInt(user.matricule);
-    user.telephone = parseInt(user.telephone);
-    user.image = { name: user.image.name, size: user.image.size, lastModified: user.image.lastModified, type: user.image.type };
-    //api call to call user
-    mutation.mutate(user);
-    //send email to user to configute his password
+  const userRoles = ["Doyen", "Chef Departement"]
+  const faculties = ["FST", "FSEG", "FSF"]
+  const departements = ["Informatique", "Nikberk"]
+  const createUserMutation = api.recteur.users.CreateUser.useMutation();
+  const [user, setUser] = useState<User>(emptyDefaultUser)
+  const [file, setFile] = useState<File>();
+  const imageInput = useRef<RefMethods>(null);
+
+  async function handleSubmit () {
+
+    let image;
+
+    if (file) {
+      image = {
+        name: file?.name,
+        size: file?.size,
+        lastModified: `${file?.lastModified}`,
+        type: file?.type,
+      }
+    }
+    try {
+      const { id: userId } = await createUserMutation.mutateAsync({
+        ...user, telephone: `${user.telephone}`, image
+      });
+      await uploadImage(userId)
+      toast.success("User Created Successfully")
+      //reset the form
+      setUser(emptyDefaultUser)
+      setFile(undefined)
+      imageInput?.current?.resetPreview()
+      //email sending
+      emailjs.send("service_occzbjn", "template_wt747y9", {
+        email: user.email,
+        name: user.nom,
+        id: userId
+      }, 'QId1k8EKVDSE9fRVS');
+      console.log("sent to ", user.email);
+
+    } catch (err) {
+      toast.error(createUserMutation.error?.message || "Erreur s'est produite");
+      console.log("catch error"); // output: catch error
+    }
 
   }
+
+  const uploadImage = async (userId: number) => {
+    if (!file) return
+    let formdata = new FormData();
+
+    formdata.append("files", file);
+    formdata.append("id", `${userId}`);
+
+    console.log(formdata)
+    const ress = await fetch(`/api/upload/profile-pic`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: formdata
+    });
+  }
+
   return (
     <div className="w-4/5 p-8 place-items-center grid grid-cols-4 justify-center items-center h-screen overflow-y-scroll scrollbar scrollbar-thumb-slate-600 scroll-smooth">
       <h1 className="text-3xl text-center col-span-4 pt-4 mt-10 font-bold text-link-text-blue">Ajouter Utilisateur</h1>
-      <CircularImageInput onChange={(file: any) => user.image = file} />
-      <Input type="text" placeholder="Nom" onChange={(val: string) => user.nom = val} icon={faUser} />
-      <Input type="text" placeholder="Prenom" onChange={(val: string) => user.prenom = val} icon={faUser} />
-      <Input type="number" placeholder="Matricule" onChange={(val: string) => user.matricule = val} icon={faUser} />
-      <Input type="text" placeholder="Date de Naissance" onChange={(val: string) => user.date_naissance = val} icon={faCalendar} />
-      <Input type="text" placeholder="leui de Naissance" onChange={(val: string) => user.leui_naissance = val} icon={faLocationDot} />
-      <Input type="email" placeholder="Email" onChange={(val: string) => user.email = val} icon={faEnvelope} />
-      <Input type="number" placeholder="Telephone" onChange={(val: string) => user.telephone = val} icon={faPhone} />
-      <Dropdown onChange={(val: string) => user.role = val} options={["Type de Utilisateur", "Doyen", "Chef Departement"]} />
-      <button onClick={Submit} className="col-start-2 col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
+      <CircularImageInput ref={imageInput} onChange={(file) => setFile(file)} />
+      <Input className='w-full' type="text" placeholder="Nom" onChange={(e) => setUser({ ...user, nom: e.target.value })} value={user.nom} icon={faUser} />
+      <Input className='w-full' type="text" placeholder="Prenom" onChange={(e) => setUser({ ...user, prenom: e.target.value })} value={user.prenom} icon={faUser} />
+      <Input className='w-full' type="number" placeholder="Matricule" onChange={(e) => setUser({ ...user, matricule: e.target.value })} value={user.matricule} icon={faUser} />
+      <Input className='w-full' type="text" placeholder="Date de Naissance" onChange={(e) => setUser({ ...user, date_naissance: e.target.value })} value={user.date_naissance} icon={faCalendar} />
+      <Input className='w-full' type="text" placeholder="leui de Naissance" onChange={(e) => setUser({ ...user, leui_naissance: e.target.value })} value={user.leui_naissance} icon={faLocationDot} />
+      <Input className='w-full' type="email" placeholder="Email" onChange={(e) => setUser({ ...user, email: e.target.value })} value={user.email} icon={faEnvelope} />
+      <Input className='w-full' type="number" placeholder="Telephone" onChange={(e) => setUser({ ...user, telephone: e.target.value })} value={user.telephone} icon={faPhone} />
+      <Dropdown onChange={(e) => setUser({ ...user, role_id: Number(e.target.value) })} value={user.role_id} options={["Type de Utilisateur", ...userRoles]} />
+      <Dropdown onChange={(e) => setUser({ ...user, faculty_id: Number(e.target.value) })} value={user.faculty_id} options={["Faculté", ...faculties]} />
+      <Dropdown onChange={(e) => setUser({ ...user, departement_id: Number(e.target.value) })} value={user.departement_id} options={["Departement", ...departements]} />
+      <button disabled={createUserMutation.isLoading} onClick={handleSubmit} className="col-start-2 col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
     </div>
   )
 }

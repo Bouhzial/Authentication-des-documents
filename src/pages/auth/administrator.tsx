@@ -6,6 +6,6 @@ import AuthLayout from '../../layouts/Auth'
 
 export default function administrator () {
     return (
-        <AuthLayout subText='Créer ou verifier les diplomes' image="/images/auth/administrator.png" />
+        <AuthLayout role_id={2} subText='Créer et verifier les diplomes' image="/images/auth/administrator.png" />
     )
 }

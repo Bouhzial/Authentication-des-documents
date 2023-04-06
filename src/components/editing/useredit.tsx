@@ -11,16 +11,25 @@ interface Props {
   checkvisible: (val: boolean) => void
 }
 export default function Useredit ({ user, checkvisible }: Props) {
-  const mutation = api.users.modifyUser.useMutation()
+  const mutation = api.recteur.users.modifyUser.useMutation()
   const [modifiedUser, setModifiedUser] = React.useState<User>(user)
-  modifiedUser.id = user.id
-  function modifier (user: User) {
-    console.log(user)
+  const [role, setrole] = React.useState<string>('')
+  function modifier (Muser: User) {
+    user = Muser
+    user.role_id = getroleId(role)
     mutation.mutate(user)
     checkvisible(false)
   }
   function change () {
     checkvisible(false)
+  }
+  function getroleId (role: string) {
+    if (role === "Doyen") {
+      return 1
+    }
+    else {
+      return 2
+    }
   }
   return (
     <div className='flex absolute top-0 left-0 justify-center items-center h-screen w-screen bg-slate-600 bg-opacity-50'>
@@ -32,7 +41,7 @@ export default function Useredit ({ user, checkvisible }: Props) {
         <h1 className='col-span-2 text-link-text-blue font-bold text-2xl'>Modifier {user.nom} </h1>
         <EditInput type='text' placeholder='nom' val={user.nom} onChange={(val) => modifiedUser.nom = val} />
         <EditInput type='text' placeholder='prenom' val={user.prenom} onChange={(val) => modifiedUser.prenom = val} />
-        <EditRole onChange={(val) => modifiedUser.role = val} options={["Doyen", "Chef Departement"]} />
+        <EditRole onChange={(val) => setrole(val)} options={["Doyen", "Chef Departement"]} />
         <EditInput type='text' placeholder='email' val={user.email} onChange={(val) => modifiedUser.email = val} />
         <EditInput type='number' placeholder='matricule' val={user.matricule.toString()} onChange={(val) => modifiedUser.matricule = parseInt(val)} />
         <EditInput type='text' placeholder='date de naissance' val={user.date_naissance} onChange={(val) => modifiedUser.date_naissance = val} />

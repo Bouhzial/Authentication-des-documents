@@ -54,16 +54,80 @@ model Session {
 }
 
 model User {
-    id           Int       @id @default(autoincrement())
-    name         String?
-    email        String?   @unique
-    phone_number String?   @unique
-    password     String
-    image        String?
-    accounts     Account[]
-    sessions     Session[]
-    role_id      Int
-    role         Role      @relation(fields: [role_id], references: [id], onDelete: Cascade)
+    id               Int           @id @default(autoincrement())
+    nom              String
+    prenom           String
+    email            String        @unique
+    telephone        String        @unique
+    matricule        String        @unique
+    password         String
+    date_naissance   String
+    leui_naissance   String
+    etablissement_id Int
+    etablissement    Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+
+    accounts Account[]
+    sessions Session[]
+    role_id  Int
+    role     Role      @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+    filiere        String?
+    faculty_id     Int?
+    faculty        Faculty?     @relation(fields: [faculty_id], references: [id], onDelete: Cascade)
+    departement_id Int?
+    departement    Departement? @relation(fields: [departement_id], references: [id], onDelete: Cascade)
+    specialite     String?
+    typeDiplome    String?
+    diplomes       Diplome[]
+    image          Image?
+}
+
+model Etablissement {
+    id         Int           @id @default(autoincrement())
+    nom        String
+    adresse    String
+    telephone  Int
+    email      String
+    User       User[]
+    department Departement[]
+    faculty    Faculty[]
+}
+
+model Faculty {
+    id               Int           @id @default(autoincrement())
+    nom              String
+    etablissement_id Int
+    etablissement    Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+    User             User[]
+}
+
+model Departement {
+    id               Int           @id @default(autoincrement())
+    nom              String
+    etablissement_id Int
+    etablissement    Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+    User             User[]
+}
+
+model Image {
+    id           Int     @id @default(autoincrement())
+    user         User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id      Int?    @unique
+    name         String
+    size         Int
+    lastModified String
+    path         String?
+    type         String?
+}
+
+model Diplome {
+    id             Int     @id @default(autoincrement())
+    type           String
+    date_obtention String
+    signedByRector Boolean
+    signedByDoyen  Boolean
+    student_id     Int
+    student        User    @relation(fields: [student_id], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
