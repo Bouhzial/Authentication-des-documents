@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { hashSync } from 'bcrypt'
 export default async (prisma: PrismaClient) => {
-     // <--- This line
-    
+    // <--- This line
+
     await prisma.user.createMany({
         data: [
             {
@@ -10,8 +10,8 @@ export default async (prisma: PrismaClient) => {
                 prenom: "bouhzila",
                 email: "dasdgsdfgas@gmail.com",
                 password: hashSync("123456", 10),
-                telephone: 7,
-                matricule: 1278464564559,
+                telephone: "7",
+                matricule: "123456",
                 date_naissance: "1999-01-01",
                 leui_naissance: "Tunis",
                 role_id: 1,
@@ -22,18 +22,18 @@ export default async (prisma: PrismaClient) => {
                 prenom: "Kasmi",
                 email: "gdfggsf@gmail.com",
                 password: hashSync("123456", 10),
-                telephone: 6,
-                matricule: 1235545,
+                telephone: "6",
+                matricule: "1235545",
                 date_naissance: "1099-01-11",
                 leui_naissance: "Losandi",
                 role_id: 4,
                 etablissement_id: 1,
-                filiere : "Informatique",
-                faculty : 'FST',
-                departement: 'informatique',
-                specialite : "Miv",
-                typeDiplome : "Master",
-        }
+                filiere: "Informatique",
+                faculty_id: 1,
+                departement_id: 1,
+                specialite: "Miv",
+                typeDiplome: "Master",
+            }
         ]
     })
     console.log('Added User data')

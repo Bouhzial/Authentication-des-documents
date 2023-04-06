@@ -4,50 +4,42 @@ export default async (prisma: PrismaClient) => {
     await prisma.etablissement.createMany({
         data: [
             {
+                id: 1,
                 nom: "ENSI",
                 adresse: "Tunis",
                 telephone: 0,
                 email: "das@gmail.com",
-            },],
+            }
+        ]
     })
-    
+
     await prisma.faculty.createMany({
         data: [
             {
-                nom: "",
+                id: 1,
+                nom: "FEI",
                 etablissement_id: 1,
-            },
-            // {
-            //     nom: "FST",
-            //     etablissement_id: 1,
-            // },
-            // {
-            //     nom: "FSEG",
-            //     etablissement_id: 1,
-            // },
-            // {
-            //     nom: "FSE",
-            //     etablissement_id: 1,
-            // }
+            }
         ]
-})
-   await prisma.departement.createMany({
+    })
+    await prisma.departement.createMany({
         data: [
             {
-                nom: "",
-                etablissement_id: 1,
-            },
-            {
+                id: 1,
                 nom: "Informatique",
                 etablissement_id: 1,
             },
             {
+                id: 2,
                 nom: "Electronique",
                 etablissement_id: 1,
             },
-            {  nom: "Mecanique",
+            {
+                id: 3,
+                nom: "Mecanique",
                 etablissement_id: 1,
             },
-        ]})
-    }
-    console.log("Added Etablissement data")
+        ]
+    })
+}
+console.log("Added Etablissement data")

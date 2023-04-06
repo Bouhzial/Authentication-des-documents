@@ -6,11 +6,12 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";
 import { compare } from "bcrypt"
+import { User } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt", // See https://next-auth.js.org/configuration/nextjs#caveats, middleware (currently) doesn't support the "database" strategy which is used by default when using an adapter (https://next-auth.js.org/configuration/options#session)
+    strategy: "jwt",
   },
   pages: {
     signIn: "/auth"
@@ -19,8 +20,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt ({ token, user }) {
       /* Step 1: update the token based on the user object */
+
       if (user) {
-        token.id = user.id;
+        token.id = Number(user.id);
+        token.nom = user.nom;
+        token.prenom = user.prenom;
+        token.image = user.image;
         token.role = user.role;
       }
       return token;
@@ -28,6 +33,9 @@ export const authOptions: NextAuthOptions = {
     session ({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
+        session.user.nom = token.nom;
+        session.user.prenom = token.prenom;
+        session.user.image = token.image;
         session.user.role = token.role;
       }
       return session;
@@ -49,7 +57,11 @@ export const authOptions: NextAuthOptions = {
           throw new Error("No credentials.");
         }
         const { email, password, role } = credentials;
-        const user = await prisma.user.findFirst({ where: { email, role_id: Number(role) } });
+        const user = await prisma.user.findFirst({
+          where: { email, role_id: Number(role) }, include: {
+            image: true
+          },
+        });
         if (!user) {
           throw new Error("User doesn't exist");
         }

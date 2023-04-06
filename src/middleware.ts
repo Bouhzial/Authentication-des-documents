@@ -1,5 +1,5 @@
 import { withAuth } from "next-auth/middleware"
-import { Role } from "./types/next-auth.d";
+import { Role } from "./types/types";
 import { getToken } from "next-auth/jwt";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 

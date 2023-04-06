@@ -9,34 +9,46 @@ import { SearchedObejct, User } from '../types/types'
 import { api } from '../utils/api'
 
 
-
+const emptyUser: User = {
+  id: 0,
+  nom: "",
+  role_id: 0,
+  email: "",
+  matricule: "",
+  prenom: "",
+  date_naissance: "",
+  leui_naissance: "",
+  telephone: "",
+  faculty_id: 0,
+  departement_id: 0
+}
 
 
 export default function UserDashBoard () {
-  const data = api.users.getUsers.useQuery().data!;
+  const usersData = api.recteur.users.getUsers.useQuery().data!;
 
   const [search, setSearch] = React.useState<SearchedObejct>({
     serached: '',
     type: '',
   })
 
-  const [seachedData, setSeachedData] = React.useState<User[]>(data);
+  const [seachedData, setSeachedData] = React.useState(usersData);
 
   useEffect(() => {
-    setSeachedData(data)
-  }, [data])
+    setSeachedData(usersData)
+  }, [usersData])
 
   function searchData () {
     console.log(search.serached);
     if (search.serached.length > 0) {
-      const newData = data.filter((user: User) => {
+      const newData = usersData.filter((user) => {
         if (search.type == 'nom') {
           return user.nom.toLowerCase().includes(search.serached.toLowerCase()) || user.prenom.toLowerCase().includes(search.serached.toLowerCase())
         }
         else if (search.type == 'role') {
-            if( getRole(user.role_id).toLowerCase().includes(search.serached.toLowerCase())){
-              return user
-            }
+          if (getRole(user.role_id).toLowerCase().includes(search.serached.toLowerCase())) {
+            return user
+          }
         }
         else if (search.type == 'email') {
           return user.email.toLowerCase().includes(search.serached.toLowerCase())
@@ -51,27 +63,10 @@ export default function UserDashBoard () {
       setSeachedData(newData)
     }
     else {
-      setSeachedData(data)
+      setSeachedData(usersData)
     }
   }
-  const emptyUser: User = {
-    id: "",
-    nom: "",
-    role_id: 0,
-    email: "",
-    matricule: 0,
-    prenom: "",
-    date_naissance: "",
-    leui_naissance: "",
-    telephone: 0,
-    image: {
-      name: "",
-      size: 0,
-      lastModified: 0,
-      type: "",
-    }
 
-  }
   const [editedUser, setEditedUser] = React.useState<User>(emptyUser)
   const [DeletedUser, setDeletedUser] = React.useState<User>(emptyUser)
 
@@ -87,17 +82,17 @@ export default function UserDashBoard () {
     setDeletedUser(user)
     setdeleteVisble(true)
   }
-  function getRole(id:number){
-    if(id==1){
+  function getRole (id: number) {
+    if (id == 1) {
       return "recteur"
     }
-    else if(id==2){
+    else if (id == 2) {
       return "chef departement"
     }
-    else if(id==3){
+    else if (id == 3) {
       return "doyen"
     }
-    else if(id==4){
+    else if (id == 4) {
       return "etudiant"
     }
     return "inconnu"
@@ -122,15 +117,15 @@ export default function UserDashBoard () {
             </tr>
           </thead>
           <tbody className='font-medium'>
-            {seachedData && seachedData.map((user: User) => {
+            {seachedData && seachedData.map((user) => {
               return (
                 <tr className="h-16 border-b border-gray-200">
                   <td className="pl-4 ">{user.nom + " " + user.prenom}</td>
                   <td className="pl-4 ">{getRole(user.role_id)}</td>
                   <td className="pl-4 ">{user.email}</td>
                   <td className="pl-4">{user.matricule}</td>
-                  <td onClick={() => { Edit(user) }} className="pl-4 text-blue-600 cursor-pointer">MODIFIE</td>
-                  <td onClick={() => { Delete(user) }} className="pl-4 text-red-600 cursor-pointer">SIPPRIMER</td>
+                  <td onClick={() => { Edit(user as User) }} className="pl-4 text-blue-600 cursor-pointer">Modifier</td>
+                  <td onClick={() => { Delete(user as User) }} className="pl-4 text-red-600 cursor-pointer">Supprimer</td>
                 </tr>
               )
             })}
