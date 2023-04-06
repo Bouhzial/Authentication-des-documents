@@ -1,6 +1,5 @@
 import { faCheck, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { log } from 'console';
 import React, { useEffect } from 'react'
 import { api } from '../utils/api';
 import { Diplome, SearchedObejct } from '../types/types';
@@ -9,21 +8,25 @@ import Search from './generic/search';
 
 export default function DiplomeView () {
   const data = api.diplomes.getDiplomes.useQuery().data!
+  //match the diplomes id with the student id
+  
+  console.log(data);
   const validate = api.diplomes.validerDiplome.useMutation()
   const refusing = api.diplomes.refuseDiplome.useMutation()
   const [view, setView] = React.useState(false)
   const [dipl, setDiplome] = React.useState<Diplome>({
     id: "",
     signedByDoyen: false,
-    signedByPresident: false,
+    signedByRector: false,
     date_obtention: "",
+    student_id: 0,
     student: {
       id: '',
       nom: '',
       prenom: '',
       matricule: 0,
       filiere: '',
-      dipartement: '',
+      departement: '',
       typeDiplome: '',
       specialite: '',
       email: '',
@@ -75,7 +78,7 @@ export default function DiplomeView () {
           return diplome.student.specialite.toLowerCase().includes(search.serached.toLowerCase())
         }
         else if (search.type == 'departement') {
-          return diplome.student.dipartement.toLowerCase().includes(search.serached.toLowerCase())
+          return diplome.student.departement.toLowerCase().includes(search.serached.toLowerCase())
         }
         else {
           return diplome.student.nom.toLowerCase().includes(search.serached.toLowerCase())
@@ -116,8 +119,8 @@ export default function DiplomeView () {
                 <td className="text-left pl-4 ">{diplome.student.typeDiplome}</td>
                 <td className="text-left pl-4 ">{diplome.date_obtention}</td>
                 <td className="text-left pl-4 ">{diplome.student.specialite}</td>
-                <td className="text-left pl-4 ">{diplome.student.dipartement}</td>
-                {diplome.signedByPresident ? <td className='text-left cursor-pointer text-green-900 pl-4 text-xl'><FontAwesomeIcon icon={faCheck} /></td> : <>
+                <td className="text-left pl-4 ">{diplome.student.departement}</td>
+                {diplome.signedByRector ? <td className='text-left cursor-pointer text-green-900 pl-4 text-xl'><FontAwesomeIcon icon={faCheck} /></td> : <>
                   <td onClick={() => { valider(diplome) }} className="text-left text-green-700 cursor-pointer pl-4 ">VALIDER </td>
                   <td onClick={() => { refuse(diplome) }} className="text-left text-red-600 cursor-pointer pl-4 ">REFUSER </td>
                   <td onClick={() => { see(diplome) }} className="text-left  cursor-pointer pl-4 ">

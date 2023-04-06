@@ -5,10 +5,22 @@ export default async (prisma: PrismaClient) => {
 
     await prisma.user.createMany({
         data: [
+            // {
+            //     nom: "ahmed",
+            //     prenom: "bouhzila",
+            //     email: "dasdgsdfgas@gmail.com",
+            //     password: hashSync("123456", 10),
+            //     telephone: 7,
+            //     matricule: 1278464564559,
+            //     date_naissance: "1999-01-01",
+            //     leui_naissance: "Tunis",
+            //     role_id: 1,
+            //     etablissement_id: 1,
+            // },
             {
-                nom: "ahmed",
-                prenom: "bouhzila",
-                email: "dasdgsdfgas@gmail.com",
+                nom: "nine",
+                prenom: "ryad",
+                email: "nineryad@gmail.com",
                 password: hashSync("123456", 10),
                 telephone: "7",
                 matricule: "123456",

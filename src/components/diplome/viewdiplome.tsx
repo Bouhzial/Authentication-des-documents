@@ -25,7 +25,7 @@ export default function ViewDiplome ({ diplome, close }: Props) {
         <DeleteInput type='text' placeholder='email' val={diplome.student.email} />
         <DeleteInput type='text' placeholder='matricule' val={diplome.student.matricule.toString()} />
         <DeleteInput type='text' placeholder='date de naissance' val={diplome.student.date_naissance} />
-        <DeleteInput type='text' placeholder='departement' val={diplome.student.dipartement} />
+        <DeleteInput type='text' placeholder='departement' val={diplome.student.departement} />
         <DeleteInput type='text' placeholder='signed par le doyen' val={diplome.signedByDoyen.toString()} />
       </div>
     </div>

@@ -3,6 +3,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
+import { hashSync } from "bcrypt";
 
 export const t = initTRPC.create();
 export const userRouter = createTRPCRouter({
@@ -16,6 +17,15 @@ export const userRouter = createTRPCRouter({
             }
         })
         return users;
+    }),
+
+    getUserById: publicProcedure.input(z.number()).mutation(async ({ input }) => {
+        const user = await prisma?.user.findFirst({
+            where: {
+                id: input
+            }
+        })
+        return { nom: user?.nom, password: user?.password };
     }),
 
     deleteUserById: recteurProcedure.input(z.number()).mutation(async ({ input }) => {
@@ -115,6 +125,44 @@ export const userRouter = createTRPCRouter({
         })
 
         console.log('modified');
+    }),
+
+    ConfigPassword: t.procedure.input(z.object({
+        id: z.number(),
+        password: z.string(),
+    })).mutation(async ({ input }) => {
+        const pass = hashSync(input.password, 10)
+        await prisma?.user.update({
+            where: {
+                id: input.id
+            },
+            data: {
+                password: pass,
+            }
+        })
+    }),
+    removePassword: t.procedure.input(z.string()).mutation(async ({ input }) => {
+        const pass = ''
+        await prisma?.user.update({
+            where: {
+                email: input,
+            },
+            data: {
+                password: pass,
+            }
+        })
+    }),
+    checkEmailValidity: t.procedure.input(z.string()).mutation(async ({ input }) => {
+        const user = await prisma?.user.findFirst({
+            where: {
+                email: input,
+            }
+        })
+        if (user) {
+            return user.id
+        } else {
+            return 0
+        }
     }),
 
 
