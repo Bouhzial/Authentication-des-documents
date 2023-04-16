@@ -6,6 +6,6 @@ import AuthLayout from '../../layouts/Auth'
 
 export default function student () {
     return (
-        <AuthLayout role_id={4}  subText='Voir et Consulter vos diplomes' image="/images/auth/student.png" />
+        <AuthLayout role_id={[4]} subText='Voir et Consulter vos diplomes' image="/images/auth/student.png" />
     )
 }

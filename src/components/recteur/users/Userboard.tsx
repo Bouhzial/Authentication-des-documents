@@ -1,12 +1,13 @@
 import { faChevronDown, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import Search from './generic/search'
+import Search from '../../generic/search'
 import { useEffect } from 'react'
 import Useredit from './editing/useredit'
 import UserDelete from './deleting/userDelete'
-import { SearchedObejct, User } from '../types/types'
-import { api } from '../utils/api'
+import { SearchedObejct } from '../../../types/types'
+import { User } from '@prisma/client'
+import { api } from '../../../utils/api'
 
 
 const emptyUser: User = {
@@ -20,7 +21,12 @@ const emptyUser: User = {
   leui_naissance: "",
   telephone: "",
   faculty_id: 0,
-  departement_id: 0
+  departement_id: 0,
+  password: '',
+  etablissement_id: 0,
+  filiere: null,
+  specialite: null,
+  typeDiplome: null
 }
 
 

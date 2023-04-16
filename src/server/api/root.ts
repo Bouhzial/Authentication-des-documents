@@ -4,6 +4,9 @@ import { diplomesRouter } from "./routers/diplomes";
 import { etablismentRouter } from "./routers/etablisment";
 import { metaDataRouter } from "./routers/metadata";
 import { recteurRouter } from "./routers/recteur/router";
+import { issuerRouter } from "./routers/issuer/router";
+import { authRouter } from "./routers/auth/router";
+import { verificatorRouter } from "./routers/verificator/router";
 
 /**
  * This is the primary router for your server.
@@ -11,7 +14,10 @@ import { recteurRouter } from "./routers/recteur/router";
  * All routers added in /api/routers should be manually added here
  */
 export const appRouter = createTRPCRouter({
+  verificator: verificatorRouter,
   recteur: recteurRouter,
+  issuer: issuerRouter,
+  auth: authRouter,
   etablisments: etablismentRouter,
   example: exampleRouter,
   diplomes: diplomesRouter,

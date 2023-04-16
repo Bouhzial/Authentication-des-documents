@@ -24,6 +24,7 @@
     "dotenv": "^16.0.3",
     "emailjs-com": "^3.2.0",
     "formidable": "^2.1.1",
+    "mailgun-js": "^0.22.0",
     "mime": "^3.0.0",
     "next": "13.1.2",
     "next-auth": "^4.18.7",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/formidable": "^2.0.5",
+    "@types/mailgun-js": "^0.22.13",
     "@types/mime": "^3.0.1",
     "@types/node": "^18.15.11",
     "@types/nodemailer": "^6.4.7",

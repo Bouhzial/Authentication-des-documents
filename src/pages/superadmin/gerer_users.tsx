@@ -1,6 +1,6 @@
 import React from 'react'
 import SideNav from '../../components/sidenav'
-import UserDashBoard from '../../components/Userboard'
+import UserDashBoard from '../../components/recteur/users/Userboard'
 import SuperAdminLayout from '../../layouts/dashboards/SuperAdmin'
 
 

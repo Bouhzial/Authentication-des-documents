@@ -9,9 +9,9 @@ const redirectToDashboardByRole = (roleId?: number): string => {
         case superAdmin:
             return "/superadmin/gerer_users"
         case issuer:
-            return "/issuer"
+            return "/issuer/creer_diplome"
         case verificator:
-            return "/verificator"
+            return "/verificator/verifier_diplome"
         case student:
             return "/student"
         default:

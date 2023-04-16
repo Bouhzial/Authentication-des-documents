@@ -6,6 +6,6 @@ import AuthLayout from '../../layouts/Auth'
 
 export default function superadmin () {
     return (
-        <AuthLayout role_id={1}  subText='Gerer votre etablissement et le staff' image="/images/auth/superadmin.png" />
+        <AuthLayout role_id={[1]} subText='Gerer votre etablissement et le staff' image="/images/auth/superadmin.png" />
     )
 }

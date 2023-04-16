@@ -1,9 +1,14 @@
 import React from 'react'
-import { Diplome } from '../../types/types';
-import DeleteInput from '../deleting/deleteinput';
+import DeleteInput from '../../recteur/users/deleting/deleteinput';
+import { CursusUniversitaire, Etudiant, Diplome } from '@prisma/client';
+
 
 interface Props {
-  diplome: Diplome,
+  diplome: Diplome & {
+    student: Etudiant & {
+      CursusUniversitaire: CursusUniversitaire[];
+    }
+  },
   close: (val: boolean) => void;
 }
 
@@ -21,11 +26,10 @@ export default function ViewDiplome ({ diplome, close }: Props) {
       <div className=' place-items-center grid grid-cols-2  bg-gray-100 h-3/4 w-3/4 rounded-2xl'>
         <DeleteInput type='text' placeholder='nom' val={diplome.student.nom} />
         <DeleteInput type='text' placeholder='prenom' val={diplome.student.prenom} />
-        <DeleteInput type='text' placeholder='type de diplome' val={diplome.student.typeDiplome} />
+        <DeleteInput type='text' placeholder='type de diplome' val={diplome.type} />
         <DeleteInput type='text' placeholder='email' val={diplome.student.email} />
-        <DeleteInput type='text' placeholder='matricule' val={diplome.student.matricule.toString()} />
+        <DeleteInput type='text' placeholder='matricule' val={diplome.student.matricule} />
         <DeleteInput type='text' placeholder='date de naissance' val={diplome.student.date_naissance} />
-        <DeleteInput type='text' placeholder='departement' val={diplome.student.departement} />
         <DeleteInput type='text' placeholder='signed par le doyen' val={diplome.signedByDoyen.toString()} />
       </div>
     </div>

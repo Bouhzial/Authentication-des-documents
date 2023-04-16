@@ -58,7 +58,14 @@ export const authOptions: NextAuthOptions = {
         }
         const { email, password, role } = credentials;
         const user = await prisma.user.findFirst({
-          where: { email, role_id: Number(role) }, include: {
+          where: {
+            email,
+            //because role_id 2 and 3 have the same login page, i needed this condition
+            role_id: Number(role) == 2 ? {
+              in: [2, 3]
+            } : Number(role)
+          },
+          include: {
             image: true
           },
         });

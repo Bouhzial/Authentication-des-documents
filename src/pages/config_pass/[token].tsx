@@ -3,48 +3,37 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react'
 import router from 'next/router';
 import { api } from '../../utils/api';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { prisma } from '../../server/db'
 
-export default function Pass_config (params: any) {
-  const [user, setUser] = React.useState<any>(null)
-  const [setted, setSetted] = React.useState<boolean>(false)
-  const mutation = api.recteur.users.getUserById.useMutation()
-  const setPass = api.recteur.users.ConfigPassword.useMutation()
-  useEffect(() => {
-    async function Get_data () {
-      const id = parseInt(params.name)
-      const User = await mutation.mutateAsync(id)
-      if (User.password != '') {
-        setSetted(true)
-      }
-      setUser(User)
+export default function Pass_config (params: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const setPass = api.auth.passwordManagement.ConfigPassword.useMutation()
 
-    }
-    Get_data()
-  }, [])
-
-  const [value, setValue] = React.useState<string>('')
-  const [valueConfirme, setValueConfirme] = React.useState<string>('')
+  const [password, setPassword] = React.useState<string>('')
+  const [passwordConfirm, setPasswordConfirm] = React.useState<string>('')
   const [err, setErr] = React.useState<boolean>(false)
   const [errmsg, setErrmsg] = React.useState<string>('')
   const [showPassword, setshowPassword] = React.useState<boolean>(false)
-  function handelChange (e: any) {
+  const [showPasswordConfirm, setshowPasswordConfirm] = React.useState<boolean>(false)
+
+  function handelChange (e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value
-    setValue(val)
+    setPassword(val)
   }
-  function handelChangeConfirme (e: any) {
+  function handelChangeConfirme (e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value
-    setValueConfirme(val)
+    setPasswordConfirm(val)
   }
   function handleSubmit () {
-    if (value != valueConfirme) {
+    if (password != passwordConfirm) {
       setErr(true)
       setErrmsg('Les mots de passe ne sont pas identiques')
       return
     }
-    if (isPasswordValid(value)) {
+    if (isPasswordValid(password)) {
       const data = {
-        id: parseInt(params.name),
-        password: value
+        token: params.token,
+        password
       }
       setPass.mutateAsync(data)
       router.push('/auth')
@@ -62,21 +51,19 @@ export default function Pass_config (params: any) {
     return true
   }
 
-  setted ? router.push('/auth') : null
   return (
     <div className='h-screen flex flex-col items-center justify-center text-link-text-blue'>
       <div className='flex my-5 text-5xl font-bold'>
         <h1>Bonjour&nbsp;</h1>
-        <h1 className='text-blue-900'>{user ? user.nom : ""}</h1>
       </div>
-      <h2 className='text-3xl '>veuillez configurer votre mot de passe</h2>
+      <h2 className='text-3xl '>Veuillez configurer votre mot de passe</h2>
       <div className='col-span-2 w-1/2 h-16 text-black text-lg font-medium m-4'>
         <input onClick={() => setErr(false)} type={showPassword ? 'text' : 'password'} onChange={handelChange} placeholder="Mot de passe" className='border border-gray-200 w-full outline-none text-lg font-medium h-16 py-3 px-10 rounded-xl shadow-xl pointer-events-auto  focus:shadow-2xl transition-all ' />
         <FontAwesomeIcon onClick={() => { setshowPassword(!showPassword) }} icon={faEye} className='cursor-pointer relative h-6 bottom-2/3 left-[90%]' />
       </div>
       <div className='col-span-2 w-1/2 h-16 text-black text-lg font-medium m-4'>
-        <input onClick={() => setErr(false)} type={showPassword ? 'text' : 'password'} onChange={handelChangeConfirme} placeholder="Confirme le mot de passe" className='border border-gray-200 w-full outline-none text-lg font-medium h-16 py-3 px-10 rounded-xl shadow-xl pointer-events-auto  focus:shadow-2xl transition-all ' />
-        <FontAwesomeIcon onClick={() => { setshowPassword(!showPassword) }} icon={faEye} className='cursor-pointer relative h-6 bottom-2/3 left-[90%]' />
+        <input onClick={() => setErr(false)} type={showPasswordConfirm ? 'text' : 'password'} onChange={handelChangeConfirme} placeholder="Confirme le mot de passe" className='border border-gray-200 w-full outline-none text-lg font-medium h-16 py-3 px-10 rounded-xl shadow-xl pointer-events-auto  focus:shadow-2xl transition-all ' />
+        <FontAwesomeIcon onClick={() => { setshowPasswordConfirm(!showPasswordConfirm) }} icon={faEye} className='cursor-pointer relative h-6 bottom-2/3 left-[90%]' />
       </div>
 
       {err && <p className='text-red-500'>{errmsg}</p>}
@@ -84,12 +71,36 @@ export default function Pass_config (params: any) {
     </div>
   )
 }
-export async function getServerSideProps (context: any) {
-  const { params } = context;
-  const { name } = params;
+export async function getServerSideProps (context: GetServerSidePropsContext<{ token: string }>) {
+
+  const token = context?.params?.token;
+
+  if (!token)
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false
+      }
+    }
+
+  const passwordConfiguration = await prisma.passwordConfiguration.findFirst({
+    where: {
+      token
+    }
+  })
+
+  if (!passwordConfiguration || passwordConfiguration?.used || passwordConfiguration?.expires < new Date()) {
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
-      name,
+      token,
     },
   };
 }

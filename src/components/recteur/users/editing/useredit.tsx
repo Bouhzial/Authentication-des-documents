@@ -1,7 +1,7 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import React from 'react'
-import { api } from '../../utils/api';
-import { User } from '../../types/types';
+import { api } from '../../../../utils/api';
+import { User } from '@prisma/client'
 import EditInput from './EditInput';
 import EditRole from './editrole';
 
@@ -43,10 +43,10 @@ export default function Useredit ({ user, checkvisible }: Props) {
         <EditInput type='text' placeholder='prenom' val={user.prenom} onChange={(val) => modifiedUser.prenom = val} />
         <EditRole onChange={(val) => setrole(val)} options={["Doyen", "Chef Departement"]} />
         <EditInput type='text' placeholder='email' val={user.email} onChange={(val) => modifiedUser.email = val} />
-        <EditInput type='number' placeholder='matricule' val={user.matricule.toString()} onChange={(val) => modifiedUser.matricule = parseInt(val)} />
+        <EditInput type='number' placeholder='matricule' val={user.matricule.toString()} onChange={(val) => modifiedUser.matricule = val} />
         <EditInput type='text' placeholder='date de naissance' val={user.date_naissance} onChange={(val) => modifiedUser.date_naissance = val} />
         <EditInput type='text' placeholder='leui de naissance' val={user.leui_naissance} onChange={(val) => modifiedUser.leui_naissance = val} />
-        <EditInput type='number' placeholder='telephone' val={user.telephone.toString()} onChange={(val) => modifiedUser.telephone = parseInt(val)} />
+        <EditInput type='number' placeholder='telephone' val={user.telephone.toString()} onChange={(val) => modifiedUser.telephone = val} />
         <button onClick={() => modifier(modifiedUser)} className='rounded-xl font-semibold w-72 h-16 text-white bg-blue-800'>Modifie</button>
         <button onClick={change} className='rounded-xl  font-semibold w-72 h-16 text-white bg-red-600'>Annuler</button>
       </div>

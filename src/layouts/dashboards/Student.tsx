@@ -1,6 +1,6 @@
 import React from 'react'
 import SideNav from '../../components/sidenav'
-import UserForm from '../../components/utilisateurform'
+import UserForm from '../../components/recteur/users/utilisateurform'
 
 type Props = {
     children: JSX.Element

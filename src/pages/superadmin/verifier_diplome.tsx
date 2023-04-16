@@ -1,5 +1,5 @@
 import React from 'react'
-import DiplomeView from '../../components/diplomeview'
+import DiplomeView from '../../components/recteur/diplomes/diplomeview'
 import SideNav from '../../components/sidenav'
 import SuperAdminLayout from '../../layouts/dashboards/SuperAdmin'
 

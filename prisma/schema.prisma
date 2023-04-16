@@ -71,15 +71,16 @@ model User {
     role_id  Int
     role     Role      @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
-    filiere        String?
-    faculty_id     Int?
-    faculty        Faculty?     @relation(fields: [faculty_id], references: [id], onDelete: Cascade)
-    departement_id Int?
-    departement    Departement? @relation(fields: [departement_id], references: [id], onDelete: Cascade)
-    specialite     String?
-    typeDiplome    String?
-    diplomes       Diplome[]
-    image          Image?
+    filiere               String?
+    faculty_id            Int?
+    faculty               Faculty?                @relation(fields: [faculty_id], references: [id], onDelete: Cascade)
+    departement_id        Int?
+    departement           Departement?            @relation(fields: [departement_id], references: [id], onDelete: Cascade)
+    specialite            String?
+    typeDiplome           String?
+    diplomes              Diplome[]
+    image                 Image?
+    PasswordConfiguration PasswordConfiguration[]
 }
 
 model Etablissement {
@@ -94,19 +95,21 @@ model Etablissement {
 }
 
 model Faculty {
-    id               Int           @id @default(autoincrement())
-    nom              String
-    etablissement_id Int
-    etablissement    Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
-    User             User[]
+    id                  Int                   @id @default(autoincrement())
+    nom                 String
+    etablissement_id    Int
+    etablissement       Etablissement         @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+    User                User[]
+    CursusUniversitaire CursusUniversitaire[]
 }
 
 model Departement {
-    id               Int           @id @default(autoincrement())
-    nom              String
-    etablissement_id Int
-    etablissement    Etablissement @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
-    User             User[]
+    id                  Int                   @id @default(autoincrement())
+    nom                 String
+    etablissement_id    Int
+    etablissement       Etablissement         @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
+    User                User[]
+    CursusUniversitaire CursusUniversitaire[]
 }
 
 model Image {
@@ -121,13 +124,15 @@ model Image {
 }
 
 model Diplome {
-    id             Int     @id @default(autoincrement())
+    id             Int      @id @default(autoincrement())
     type           String
-    date_obtention String
-    signedByRector Boolean
-    signedByDoyen  Boolean
+    date_obtention DateTime @db.Date
+    signedByRector Boolean  @default(false)
+    signedByDoyen  Boolean  @default(false)
+    student        Etudiant @relation(fields: [student_id], references: [id], onDelete: Cascade)
     student_id     Int
-    student        User    @relation(fields: [student_id], references: [id], onDelete: Cascade)
+    user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id        Int
 }
 
 model VerificationToken {
@@ -136,4 +141,52 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+//mimic ent.usthb database
+
+model Etudiant {
+    id                  Int                   @id @default(autoincrement())
+    nom                 String
+    prenom              String
+    email               String                @unique
+    matricule           String                @unique
+    date_naissance      String
+    lieu_naissance      String
+    CursusUniversitaire CursusUniversitaire[]
+    Diplome             Diplome[]
+}
+
+model CursusUniversitaire {
+    id               Int                @id @default(autoincrement())
+    section          String
+    groupe           String
+    filiere          String?
+    faculty_id       Int?
+    faculty          Faculty?           @relation(fields: [faculty_id], references: [id], onDelete: Cascade)
+    departement_id   Int?
+    departement      Departement?       @relation(fields: [departement_id], references: [id], onDelete: Cascade)
+    specialite       String?
+    moyenne_annuelle Decimal?           @db.Decimal(4, 2)
+    annee_id         Int
+    annee            AnneeUniversitaire @relation(fields: [annee_id], references: [id], onDelete: Cascade)
+    niveau           Int
+    Etudiant         Etudiant?          @relation(fields: [etudiant_id], references: [id])
+    etudiant_id      Int?
+}
+
+model AnneeUniversitaire {
+    id                  Int                   @id @default(autoincrement())
+    annee               Int
+    isCurrent           Boolean
+    CursusUniversitaire CursusUniversitaire[]
+}
+
+model PasswordConfiguration {
+    id      Int      @id @default(autoincrement())
+    user_id Int
+    user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    token   String
+    used    Boolean  @default(false)
+    expires DateTime
 }

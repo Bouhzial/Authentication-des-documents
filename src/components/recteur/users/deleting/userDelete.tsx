@@ -1,6 +1,6 @@
 import React from 'react'
-import { api } from '../../utils/api';
-import { User } from '../../types/types';
+import { api } from '../../../../utils/api';
+import { User } from '@prisma/client';
 import DeleteInput from './deleteinput';
 import toast from 'react-hot-toast';
 

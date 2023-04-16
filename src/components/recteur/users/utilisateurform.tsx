@@ -1,13 +1,12 @@
 import { faCalendar, faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useRef, useState } from 'react'
-import Dropdown from './generic/dropdown'
-import { CircularImageInput, RefMethods } from './generic/imageinput'
-import Input from './generic/input'
-import { api } from '../utils/api'
-import { User } from '../types/types'
+import Dropdown from '../../generic/dropdown'
+import { CircularImageInput, RefMethods } from '../../generic/imageinput'
+import Input from '../../generic/input'
+import { api } from '../../../utils/api'
+import { User } from '../../../types/types'
 import toast from 'react-hot-toast';
-import emailjs from 'emailjs-com';
 import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
 
 
@@ -62,13 +61,7 @@ export default function UserForm () {
       setUser(emptyDefaultUser)
       setFile(undefined)
       imageInput?.current?.resetPreview()
-      //email sending
-      emailjs.send("service_occzbjn", "template_wt747y9", {
-        email: user.email,
-        name: user.nom,
-        id: userId
-      }, 'QId1k8EKVDSE9fRVS');
-      console.log("sent to ", user.email);
+
 
     } catch (err) {
       toast.error(createUserMutation.error?.message || "Erreur s'est produite");

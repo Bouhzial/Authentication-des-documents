@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
+import emailjs from 'emailjs-com';
 
 export const t = initTRPC.create();
 export const userRouter = createTRPCRouter({
@@ -91,6 +92,16 @@ export const userRouter = createTRPCRouter({
                 }
             })
         }
+
+        //email sending
+        emailjs.send("service_occzbjn", "template_wt747y9", {
+            email: user.email,
+            name: user.nom,
+            id: user.id
+        }, 'QId1k8EKVDSE9fRVS');
+        console.log("sent to ", user.email);
+
+
         const { password, ...userDataWithoutPassword } = user
         return userDataWithoutPassword
     }),
