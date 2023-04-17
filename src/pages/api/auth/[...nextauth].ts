@@ -27,6 +27,7 @@ export const authOptions: NextAuthOptions = {
         token.prenom = user.prenom;
         token.image = user.image;
         token.role = user.role;
+        token.etablissement_id = user.etablissement_id;
       }
       return token;
     },
@@ -37,6 +38,7 @@ export const authOptions: NextAuthOptions = {
         session.user.prenom = token.prenom;
         session.user.image = token.image;
         session.user.role = token.role;
+        session.user.etablissement_id = token.etablissement_id;
       }
       return session;
     },
