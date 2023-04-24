@@ -2,7 +2,7 @@ import { faCheck, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { api } from '../../../utils/api';
-import ViewDiplome from './DiplomeModal';
+import ViewDiplome from '../../generic/DiplomeModal';
 import Search from '../../generic/search';
 import { CursusUniversitaire, Etudiant, Diplome } from '@prisma/client';
 import toast from 'react-hot-toast';
@@ -56,7 +56,7 @@ export default function DiplomeView () {
 
   return (
 
-    <div className='m-8 flex flex-col h-full w-full items-center'>
+    <div className='p-8 flex h-screen flex-col items-center w-4/5'>
       <div className='flex items-center justify-between w-full'>
         <div>
           <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Verifier Les Diplomes</h1>

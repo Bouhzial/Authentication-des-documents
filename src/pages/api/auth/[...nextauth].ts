@@ -28,6 +28,8 @@ export const authOptions: NextAuthOptions = {
         token.image = user.image;
         token.role = user.role;
         token.etablissement_id = user.etablissement_id;
+        token.departement_id = user.departement_id? user.departement_id : null;
+        token.faculty_id = user.faculty_id? user.faculty_id : null;
       }
       return token;
     },
@@ -39,6 +41,8 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.image;
         session.user.role = token.role;
         session.user.etablissement_id = token.etablissement_id;
+        session.user.departement_id = token.departement_id;
+        session.user.faculty_id = token.faculty_id;
       }
       return session;
     },

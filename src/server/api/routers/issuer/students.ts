@@ -9,13 +9,35 @@ import emailjs from 'emailjs-com';
 export const t = initTRPC.create();
 export const studentsRouter = createTRPCRouter({
 
-    GetSuccesfulStudents: issuerProcedure.query(async () => {
+    GetStudents: issuerProcedure.input(z.number()).query(async ({ input }) => {
+        const students = await prisma.etudiant.findMany({
+            where: {
+                CursusUniversitaire: {
+                    some: {
+                        annee: {
+                            isCurrent: true
+                        },
+                        departement_id: input
+                    }
+                }
+            },
+            include:{
+                CursusUniversitaire: {}
+            }
+        });
+            return students;
+    }),
+
+
+    GetSuccesfulStudents: issuerProcedure.input(z.number()).query(async ({ input: departement_id }) => {
         //get all students ids from diplomas table
         const diplomas = await prisma.diplome.findMany({
             select: {
                 student_id: true
             }
         });
+        console.log(diplomas);
+        
         const ids = diplomas.map(d => d.student_id);
 
         //get all etudiants from etudiant table , where annee universitaire in cursus is current , and niveau in cursus is 3 (l3) or 5 (m2) ,and moyenne in cursus is >= 10
@@ -34,7 +56,8 @@ export const studentsRouter = createTRPCRouter({
                         },
                         moyenne_annuelle: {
                             gte: 10
-                        }
+                        },
+                        departement_id: departement_id
                     }
                 }
             },
@@ -57,7 +80,7 @@ export const studentsRouter = createTRPCRouter({
                 }
             }
         });
-
+        
         return students;
     }),
 });
