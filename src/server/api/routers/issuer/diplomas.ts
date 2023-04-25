@@ -6,8 +6,8 @@ import { createTRPCRouter, issuerProcedure, protectedProcedure, publicProcedure,
 import { hashSync } from "bcrypt";
 import emailjs from 'emailjs-com';
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
-import { createEmailJob } from "../../../../../queues/emails/queue";
-import { EmailType } from "../../../../../queues/emails/worker";
+import { EmailType, createEmailJob } from "../../../queues";
+
 
 export const t = initTRPC.create();
 export const diplomasRouter = createTRPCRouter({
@@ -92,13 +92,13 @@ export const diplomasRouter = createTRPCRouter({
         return diplome;
     }),
 
-    GetDiplomasByDepartementId: issuerProcedure.input(z.number()).query(async ({ input: departement_id }) => {
-        console.log(departement_id);
+    GetDiplomasByDepartementId: issuerProcedure.query(async ({ ctx }) => {
+
         const studentsIdsByDepartement = await prisma.etudiant.findMany({
             where: {
                 CursusUniversitaire: {
                     some: {
-                        departement_id: departement_id
+                        departement_id: ctx.session.user.departement_id
                     }
                 }
             },
@@ -118,12 +118,11 @@ export const diplomasRouter = createTRPCRouter({
                     include: {
                         CursusUniversitaire: {
                             where: {
-                                departement_id: departement_id
+                                departement_id: ctx.session.user.departement_id
                             }
                         }
                     }
                 },
-                user: true
             }
         });
         return diplomas;

@@ -10,11 +10,11 @@ const prisma = new PrismaClient()
 const load = async () => {
     try {
         console.log("Seeding data...")
-        // await etablissementSeeder(prisma);
-        // await rolesSeeder(prisma);
-        // await usersSeeder(prisma);
-        // await entLikeDataSeeder(prisma)
-        // await diplomesSeeder(prisma);
+        await etablissementSeeder(prisma);
+        await rolesSeeder(prisma);
+        await usersSeeder(prisma);
+        await entLikeDataSeeder(prisma)
+        await diplomesSeeder(prisma);
     } catch (e) {
         console.error(e)
         process.exit(1)

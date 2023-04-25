@@ -6,7 +6,7 @@ import { createTRPCRouter, verificatorProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
 import emailjs from 'emailjs-com';
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
-import { createDiplomaInBlockChain } from "../../../../../queues/diplomaCreation/queue";
+import { createDiplomaInBlockChain } from "../../../queues";
 
 export const t = initTRPC.create();
 export const diplomasRouter = createTRPCRouter({
