@@ -28,8 +28,12 @@ declare module "next-auth" {
       id: number;
       nom: string
       prenom: string
+      email: string
       image: Image | null;
       role: Role
+      etablissement_id: number
+      faculty_id: number
+      departement_id: number
     };
   }
   // interface Session {

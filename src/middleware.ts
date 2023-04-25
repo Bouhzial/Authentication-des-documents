@@ -14,7 +14,7 @@ const redirectToDashboardByRole = (roleId?: number): string => {
         case verificator:
             return "/verificator/verifier_diplome"
         case student:
-            return "/student"
+            return "/student/consulter_diplomes"
         default:
             return "/auth"
     }
@@ -41,7 +41,7 @@ export async function middleware (req: NextRequest, _next: NextFetchEvent) {
         const secret = env.NEXTAUTH_SECRET;
         const token = await getToken({ req ,secret });
         if (!token) {
-            return NextResponse.redirect(new URL(`/auth/superadmin`, req.url));
+            return NextResponse.redirect(new URL(`/auth`, req.url));
         }
         const route = protectedPaths.find(item => item.role === token.role)
         if (!route || !pathname.startsWith(route.path)) {

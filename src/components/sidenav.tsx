@@ -4,6 +4,7 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
 interface linknav {
 
   name: string;
@@ -17,12 +18,14 @@ interface Props {
 }
 export default function SideNav ({ name, image_link, options }: Props) {
   const { data: session } = useSession();
+  console.log(session?.user?.image);
+  
   const router = useRouter();
   return (
     <div className='flex flex-col bg-primary-gray justify-between w-1/5 max-w-[600px] min-w-[300px] h-screen'>
       <div className='flex flex-col  items-center h-5/6'>
         <div className='flex flex-col items-center mt-10 '>
-          <img src={session?.user?.image?.name || "/Rafik.jpg"} className='w-20 h-20 rounded-full' />
+          <Image src={'/'+session?.user?.image?.path || "/Rafik.jpg"} width={5} height={5} className='w-20 h-20 rounded-full' alt="profile Pic"/>
           <p className='text-link-text-blue text-xl mt-2 font-bold'>{`${session?.user?.prenom} ${session?.user?.nom}`}</p>
         </div>
         <div className='flex flex-col mt-14 w-full text-xl 2xl:text-3xl align-middle  h-1/5 cursor-pointer'>

@@ -34,13 +34,13 @@ export default function AuthForm ({ role_id }: Props) {
                 router.push('/superadmin/gerer_users');
             }
             else if(role_id[0]==2){
-                router.push('/issuer');
+                router.push('/issuer/creer_diplome');
             }
             else if(role_id[0]==3){
                 router.push('/verifier');
             }
             else if(role_id[0]==4){
-                router.push('/student');
+                router.push('/student/consulter_diplomes');
             }
         }
     }

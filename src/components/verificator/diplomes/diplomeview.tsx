@@ -2,7 +2,7 @@ import { faCheck, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { api } from '../../../utils/api';
-import ViewDiplome from './DiplomeModal';
+import ViewDiplome from '../../generic/DiplomeModal';
 import Search from '../../generic/search';
 import { CursusUniversitaire, Etudiant, Diplome } from '@prisma/client';
 import toast from 'react-hot-toast';

@@ -93,12 +93,6 @@ export default function UserForm () {
       setFile(undefined)
       imageInput?.current?.resetPreview()
 
-      emailjs.send("service_occzbjn", "template_wt747y9", {
-        email: user.email,
-        name: user.nom,
-        id: userId
-      }, "QId1k8EKVDSE9fRVS");
-      console.log("sent to ", user.email);
 
     } catch (err) {
       toast.error(createUserMutation.error?.message || "Erreur s'est produite");
