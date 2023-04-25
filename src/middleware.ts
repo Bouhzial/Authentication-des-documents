@@ -2,6 +2,7 @@ import { withAuth } from "next-auth/middleware"
 import { Role } from "./types/types";
 import { getToken } from "next-auth/jwt";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { env } from "./env/server.mjs";
 
 const redirectToDashboardByRole = (roleId?: number): string => {
     const { superAdmin, issuer, verificator, student } = Role;
@@ -13,7 +14,7 @@ const redirectToDashboardByRole = (roleId?: number): string => {
         case verificator:
             return "/verificator/verifier_diplome"
         case student:
-            return "/student"
+            return "/student/consulter_diplomes"
         default:
             return "/auth"
     }
@@ -28,23 +29,23 @@ const protectedPaths = [
 ];
 const guestPaths = [
     "/auth",
-    "/config_pass"
+    "/config_pass/"
 ];
-export async function middleware (request: NextRequest, _next: NextFetchEvent) {
-    const { pathname } = request.nextUrl;
+export async function middleware (req: NextRequest, _next: NextFetchEvent) {
+    const { pathname } = req.nextUrl;
 
     const matchesProtectedPath = protectedPaths.some(({ path }) =>
         pathname.startsWith(path)
     );
     if (matchesProtectedPath) {
-        const token = await getToken({ req: request });
-
+        const secret = env.NEXTAUTH_SECRET;
+        const token = await getToken({ req ,secret });
         if (!token) {
-            return NextResponse.redirect(new URL(`/auth`, request.url));
+            return NextResponse.redirect(new URL(`/auth`, req.url));
         }
         const route = protectedPaths.find(item => item.role === token.role)
         if (!route || !pathname.startsWith(route.path)) {
-            return NextResponse.redirect(new URL(redirectToDashboardByRole(token?.role), request.url));
+            return NextResponse.redirect(new URL(redirectToDashboardByRole(token?.role), req.url));
         }
     }
     const matchesGuestPaths = guestPaths.some((path) =>
@@ -52,9 +53,9 @@ export async function middleware (request: NextRequest, _next: NextFetchEvent) {
     );
 
     if (matchesGuestPaths) {
-        const token = await getToken({ req: request });
+        const token = await getToken({ req: req });
         if (token) {
-            return NextResponse.redirect(new URL(redirectToDashboardByRole(token?.role), request.url));
+            return NextResponse.redirect(new URL(redirectToDashboardByRole(token?.role), req.url));
         }
     }
     return NextResponse.next();

@@ -152,6 +152,7 @@ model Etudiant {
     prenom              String
     email               String                @unique
     matricule           String                @unique
+    telephone           String                @unique
     date_naissance      String
     lieu_naissance      String
     CursusUniversitaire CursusUniversitaire[]

@@ -9,6 +9,7 @@ export default async (prisma: PrismaClient) => {
                 nom: "Kasmi",
                 prenom: "Rafik",
                 email: "kasmi.rafik@outlook.com",
+                telephone: "123456787",
                 matricule: "202031049367",
                 date_naissance: "1099-01-11",
                 lieu_naissance: "Losandi"
@@ -18,6 +19,7 @@ export default async (prisma: PrismaClient) => {
                 nom: "Bouhzila",
                 prenom: "Ahmed",
                 email: "bhzl@gmail.com",
+                telephone: "123456788",
                 matricule: "1235545",
                 date_naissance: "1099-01-11",
                 lieu_naissance: "Losandi"
@@ -27,6 +29,7 @@ export default async (prisma: PrismaClient) => {
                 nom: "hmar",
                 prenom: "hmar",
                 email: "bhz1l@gmail.com",
+                telephone: "123456789",
                 matricule: "123552245",
                 date_naissance: "1099-01-11",
                 lieu_naissance: "Losandi"

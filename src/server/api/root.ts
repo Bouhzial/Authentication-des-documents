@@ -7,6 +7,7 @@ import { recteurRouter } from "./routers/recteur/router";
 import { issuerRouter } from "./routers/issuer/router";
 import { authRouter } from "./routers/auth/router";
 import { verificatorRouter } from "./routers/verificator/router";
+import { StudentRouter } from "./routers/student/router";
 
 /**
  * This is the primary router for your server.
@@ -17,6 +18,7 @@ export const appRouter = createTRPCRouter({
   verificator: verificatorRouter,
   recteur: recteurRouter,
   issuer: issuerRouter,
+  student: StudentRouter,
   auth: authRouter,
   etablisments: etablismentRouter,
   example: exampleRouter,

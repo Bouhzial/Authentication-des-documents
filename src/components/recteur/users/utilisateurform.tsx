@@ -8,6 +8,9 @@ import { api } from '../../../utils/api'
 import { User } from '../../../types/types'
 import toast from 'react-hot-toast';
 import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
+import { useSession } from 'next-auth/react'
+import emailjs from 'emailjs-com';
+import { env } from 'process'
 
 
 
@@ -31,17 +34,45 @@ const emptyDefaultUser: User = {
 }
 
 export default function UserForm () {
+  const { data: session } = useSession();
   const userRoles = ["Doyen", "Chef Departement"]
-  const faculties = ["FST", "FSEG", "FSF"]
-  const departements = ["Informatique", "Nikberk"]
+  const GetFacultiesByEtablissementMutation =  api.etablisments.GetFacultiesByEtablissement.useMutation();
+  const GetDepartementsByFacultyMutation =  api.etablisments.GetDepartementsByEtablissement.useMutation();
+  const [faculties,setFaculties] = useState<[]>([]);
+  const [facultiesObject,setFacultiesObject] = useState<[]>([]); // facultes object
+  const [departementsObject,setDepartementsObject] = useState<[]>([]); // departements object
+  const [departements,setDepartements] = useState<[]>([]);
   const createUserMutation = api.recteur.users.CreateUser.useMutation();
   const [user, setUser] = useState<User>(emptyDefaultUser)
   const [file, setFile] = useState<File>();
   const imageInput = useRef<RefMethods>(null);
 
-  async function handleSubmit () {
+  useEffect(() => {
+    const getFaculties = async () => {
+      const facultiesObject = await GetFacultiesByEtablissementMutation.mutateAsync(session?.user?.etablissement_id);
+      setFacultiesObject(facultiesObject)
+      const facultiesname = facultiesObject.map((faculty: { nom: string })  => faculty.nom);
+      setFaculties(facultiesname)
+    }
+    const getDepartements = async () => {
+      const departementsObject = await GetDepartementsByFacultyMutation.mutateAsync(session?.user?.etablissement_id);
+      setDepartementsObject(departementsObject)
+      const departementsname = departementsObject.map((departement: { nom: string })  => departement.nom);
+      setDepartements(departementsname)
+    }
+    getDepartements();
+    getFaculties();
+  }, [session])
 
+  async function handleSubmit () {
+    user.faculty_id = facultiesObject[user.faculty_id-1].id
+    user.departement_id = departementsObject[user.departement_id-1].id
+    if(user.role_id == 1) user.role_id = 3
+    else user.role_id = 2
+    console.log(user);
     let image;
+
+
 
     if (file) {
       image = {
@@ -56,7 +87,7 @@ export default function UserForm () {
         ...user, telephone: `${user.telephone}`, image
       });
       await uploadImage(userId)
-      toast.success("User Created Successfully")
+      toast.success("User Created Success2/3y")
       //reset the form
       setUser(emptyDefaultUser)
       setFile(undefined)
@@ -91,13 +122,13 @@ export default function UserForm () {
     <div className="w-4/5 p-8 place-items-center grid grid-cols-4 justify-center items-center h-screen overflow-y-scroll scrollbar scrollbar-thumb-slate-600 scroll-smooth">
       <h1 className="text-3xl text-center col-span-4 pt-4 mt-10 font-bold text-link-text-blue">Ajouter Utilisateur</h1>
       <CircularImageInput ref={imageInput} onChange={(file) => setFile(file)} />
-      <Input className='w-full' type="text" placeholder="Nom" onChange={(e) => setUser({ ...user, nom: e.target.value })} value={user.nom} icon={faUser} />
-      <Input className='w-full' type="text" placeholder="Prenom" onChange={(e) => setUser({ ...user, prenom: e.target.value })} value={user.prenom} icon={faUser} />
-      <Input className='w-full' type="number" placeholder="Matricule" onChange={(e) => setUser({ ...user, matricule: e.target.value })} value={user.matricule} icon={faUser} />
-      <Input className='w-full' type="text" placeholder="Date de Naissance" onChange={(e) => setUser({ ...user, date_naissance: e.target.value })} value={user.date_naissance} icon={faCalendar} />
-      <Input className='w-full' type="text" placeholder="leui de Naissance" onChange={(e) => setUser({ ...user, leui_naissance: e.target.value })} value={user.leui_naissance} icon={faLocationDot} />
-      <Input className='w-full' type="email" placeholder="Email" onChange={(e) => setUser({ ...user, email: e.target.value })} value={user.email} icon={faEnvelope} />
-      <Input className='w-full' type="number" placeholder="Telephone" onChange={(e) => setUser({ ...user, telephone: e.target.value })} value={user.telephone} icon={faPhone} />
+      <Input className='w-2/3' type="text" placeholder="Nom" onChange={(e) => setUser({ ...user, nom: e.target.value })} value={user.nom} icon={faUser} />
+      <Input className='w-2/3' type="text" placeholder="Prenom" onChange={(e) => setUser({ ...user, prenom: e.target.value })} value={user.prenom} icon={faUser} />
+      <Input className='w-2/3' type="number" placeholder="Matricule" onChange={(e) => setUser({ ...user, matricule: e.target.value })} value={user.matricule} icon={faUser} />
+      <Input className='w-2/3' type="text" placeholder="Date de Naissance" onChange={(e) => setUser({ ...user, date_naissance: e.target.value })} value={user.date_naissance} icon={faCalendar} />
+      <Input className='w-2/3' type="text" placeholder="leui de Naissance" onChange={(e) => setUser({ ...user, leui_naissance: e.target.value })} value={user.leui_naissance} icon={faLocationDot} />
+      <Input className='w-2/3' type="email" placeholder="Email" onChange={(e) => setUser({ ...user, email: e.target.value })} value={user.email} icon={faEnvelope} />
+      <Input className='w-2/3' type="number" placeholder="Telephone" onChange={(e) => setUser({ ...user, telephone: e.target.value })} value={user.telephone} icon={faPhone} />
       <Dropdown onChange={(e) => setUser({ ...user, role_id: Number(e.target.value) })} value={user.role_id} options={["Type de Utilisateur", ...userRoles]} />
       <Dropdown onChange={(e) => setUser({ ...user, faculty_id: Number(e.target.value) })} value={user.faculty_id} options={["Faculté", ...faculties]} />
       <Dropdown onChange={(e) => setUser({ ...user, departement_id: Number(e.target.value) })} value={user.departement_id} options={["Departement", ...departements]} />

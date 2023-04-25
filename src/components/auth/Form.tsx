@@ -15,8 +15,8 @@ export default function AuthForm ({ role_id }: Props) {
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        // router.pathname
-
+        
+        
         e.preventDefault();
         const result = await signIn("credentials", {
             email,
@@ -29,20 +29,32 @@ export default function AuthForm ({ role_id }: Props) {
             setError(result.error);
         }
         if (result?.ok) {
-            router.reload()
+            
+            if(role_id[0]==1){
+                router.push('/superadmin/gerer_users');
+            }
+            else if(role_id[0]==2){
+                router.push('/issuer/creer_diplome');
+            }
+            else if(role_id[0]==3){
+                router.push('/verifier');
+            }
+            else if(role_id[0]==4){
+                router.push('/student/consulter_diplomes');
+            }
         }
     }
 
     return (
-        <form className='space-y-8 w-full md:min-w-[350px] md:max-w-[600px]' onSubmit={handleSubmit}>
-            {!!error && <p className="text-error">{error}</p>}
+        <form className='space-y-8  w-full md:min-w-[350px] md:max-w-[600px]' onSubmit={handleSubmit}>
+            
 
-            <Input placeholder='Email' type='email' icon={faEnvelope} onChange={(e) => { setEmail(e.target.value) }} ></Input>
+            <Input placeholder='Email' type='email' className='w-full' icon={faEnvelope} onChange={(e) => { setEmail(e.target.value) }} ></Input>
 
-            <Input placeholder='Password' type='password' icon={faLock} onChange={(e) => { setPassword(e.target.value) }} ></Input>
+            <Input placeholder='Password' type='password' className='w-full' icon={faLock} onChange={(e) => { setPassword(e.target.value) }} ></Input>
 
             <Link href="/auth/restore_password"><p className="text-center text-xs text-link-text-blue mt-3">Mot de passe oublié ?</p></Link>
-
+            {!!error && <p className="text-error text-red-500">{error}</p>}
             <button className='w-full h-16 border-none bg-link-text-blue text-white rounded-2xl'>Login</button>
         </form>
     )

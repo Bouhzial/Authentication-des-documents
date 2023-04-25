@@ -74,7 +74,6 @@ export default function Pass_config (params: InferGetServerSidePropsType<typeof 
 export async function getServerSideProps (context: GetServerSidePropsContext<{ token: string }>) {
 
   const token = context?.params?.token;
-
   if (!token)
     return {
       redirect: {
@@ -88,7 +87,8 @@ export async function getServerSideProps (context: GetServerSidePropsContext<{ t
       token
     }
   })
-
+  console.log(!passwordConfiguration , passwordConfiguration?.used , passwordConfiguration?.expires );
+  
   if (!passwordConfiguration || passwordConfiguration?.used || passwordConfiguration?.expires < new Date()) {
     return {
       redirect: {

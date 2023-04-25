@@ -13,7 +13,7 @@ export default function Dropdown ({ options, onChange, value, className }: Props
     const [clicked, setClicked] = React.useState(false);
 
     return (
-        <div className={`h-16 text-red text-lg font-medium relative ${className || 'w-96'} rounded-2xl border border-gray-50`} onMouseEnter={() => { setClicked(true) }} onMouseLeave={() => { setClicked(false) }}>
+        <div className={`h-16 col-span-2 text-red text-lg font-medium relative ${className || 'w-2/3'} rounded-2xl border border-gray-50`} onFocus={() => { setClicked(true) }} onBlur={() => { setClicked(false) }}>
             <select onChange={onChange} value={value} className={`cursor-pointer bg-white w-full h-16 outline-none text-lg font-medium py-3 px-5 rounded-2xl shadow-lg pointer-events-auto focus:shadow-xl transition-all ${value == '-1' ? 'text-gray-500' : ''}`}>
                 {options.map((option, index) => (
                     index === 0 ? <option selected value={-1}>{option}</option> :

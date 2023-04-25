@@ -27,7 +27,7 @@ export default function Search ({ change, fileds }: Props) {
     <div className="flex items-center ml-2 gap-2">
       <FontAwesomeIcon icon={faSearch} className="h-4 relative text-gray-400 left-10 cursor-pointer" />
       <input onChange={(e: any) => handelChange(1, e)} type="text" placeholder="Rechercher Utilisateur" className="focus:border-2 focus:border-gray-900 transition-all w-72 h-12 pl-12 pr-4 border rounded-lg border-link-gray text-gray-400 focus:text-black font-medium  outline-none  " />
-      <select onChange={(e: any) => handelChange(2, e)} onClick={() => setClicked(!clicked)} className='focus:border-2 focus:border-gray-900 transition-all w-32 h-12 px-4 border rounded-lg border-link-gray text-gray-400 focus:text-black font-medium  outline-none' >
+      <select onChange={(e: any) => handelChange(2, e)} onFocus={() => setClicked(true)} onBlur={()=>{setClicked(false)}} className='focus:border-2 focus:border-gray-900 transition-all w-32 h-12 px-4 border rounded-lg border-link-gray text-gray-400 focus:text-black font-medium  outline-none' >
         {fileds.map((field) => (
           <option value={field}>{field}</option>
         ))}

@@ -42,7 +42,7 @@ export const diplomasRouter = createTRPCRouter({
 
 
         }
-        const { nom, prenom, email, matricule, date_naissance, lieu_naissance } = etudiant;
+        const { nom, prenom, email, matricule, telephone, date_naissance, lieu_naissance } = etudiant;
         const { filiere, faculty_id, departement_id, specialite } = etudiant.CursusUniversitaire[0];
         //create user using etudiant data
         const user = await prisma.user.create({
@@ -50,7 +50,7 @@ export const diplomasRouter = createTRPCRouter({
                 nom,
                 prenom,
                 email,
-                telephone: "",
+                telephone,
                 matricule,
                 password: "",
                 etablissement_id: 1,
@@ -90,5 +90,42 @@ export const diplomasRouter = createTRPCRouter({
             }
         });
         return diplome;
+    }),
+
+    GetDiplomasByDepartementId: issuerProcedure.input(z.number()).query(async ({ input: departement_id }) => {
+        console.log(departement_id);
+        const studentsIdsByDepartement = await prisma.etudiant.findMany({
+            where: {
+                CursusUniversitaire: {
+                    some: {
+                        departement_id: departement_id
+                    }
+                }
+            },
+            select: {
+                id: true
+            }
+        });
+
+        const diplomas = await prisma.diplome.findMany({
+            where: {
+                student_id: {
+                    in: studentsIdsByDepartement.map(s => s.id)
+                }
+            },
+            include: {
+                student: {
+                    include: {
+                        CursusUniversitaire: {
+                            where: {
+                                departement_id: departement_id
+                            }
+                        }
+                    }
+                },
+                user: true
+            }
+        });
+        return diplomas;
     }),
 });
