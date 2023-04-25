@@ -17,7 +17,6 @@ export default function StudentsTable () {
         } catch (e) {
             toast.error("Erreur lors de la création du diplome")
         }
-        createDiplomasMutation.mutateAsync(id)
     }
 
 

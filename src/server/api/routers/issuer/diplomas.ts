@@ -6,6 +6,8 @@ import { createTRPCRouter, issuerProcedure, protectedProcedure, publicProcedure,
 import { hashSync } from "bcrypt";
 import emailjs from 'emailjs-com';
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
+import { createEmailJob } from "../../../../../queues/emails/queue";
+import { EmailType } from "../../../../../queues/emails/worker";
 
 export const t = initTRPC.create();
 export const diplomasRouter = createTRPCRouter({
@@ -62,7 +64,14 @@ export const diplomasRouter = createTRPCRouter({
             }
         });
         // send password configuration email
-        await sendPasswordConfigurationEmail(user.id, user.nom, user.email);
+        //using an email queue
+        await createEmailJob({
+            emailType: EmailType.configPassword,
+            userId: user.id,
+            name: user.nom,
+            userEmail: user.email
+        });
+        // await sendPasswordConfigurationEmail(user.id, user.nom, user.email);
         // create diploma using etudiant and cursus data
         const diplome = await prisma.diplome.create({
             data: {

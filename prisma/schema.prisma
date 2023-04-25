@@ -133,6 +133,7 @@ model Diplome {
     student_id     Int
     user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
     user_id        Int
+    encrypted_hash String?  @db.VarChar(280)
 }
 
 model VerificationToken {

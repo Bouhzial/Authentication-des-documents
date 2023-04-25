@@ -6,6 +6,7 @@ import { createTRPCRouter, verificatorProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
 import emailjs from 'emailjs-com';
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
+import { createDiplomaInBlockChain } from "../../../../../queues/diplomaCreation/queue";
 
 export const t = initTRPC.create();
 export const diplomasRouter = createTRPCRouter({
@@ -38,6 +39,18 @@ export const diplomasRouter = createTRPCRouter({
 
     validateDiploma: verificatorProcedure.input(z.number()).mutation(async ({ input: id }) => {
 
+        const diplome = await prisma.diplome.findUnique({
+            where: {
+                id
+            }
+        })
+
+        if (!diplome)
+            throw new TRPCError({
+                code: "NOT_FOUND",
+                message: "Diplome non trouvé"
+            })
+
         await prisma.diplome.update({
             where: {
                 id
@@ -46,6 +59,10 @@ export const diplomasRouter = createTRPCRouter({
                 signedByDoyen: true
             }
         })
+        if (diplome?.signedByRector) {
+            await createDiplomaInBlockChain(diplome.id);
+            return "Diplome Validé et envoyé au blockchain"
+        }
         return "Diplome Validé"
     }),
 
