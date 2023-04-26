@@ -21,10 +21,12 @@ export const etablismentRouter:any = createTRPCRouter({
         })
         return departements
     }),
-    GetDepartements: t.procedure.query(async () => {
+
+    GetDepartements: t.procedure.query(async() => {
         const departements = await prisma?.departement.findMany({})
         return departements
     }),
+
     GetFacultiesByName: t.procedure.input(z.string()).mutation(async ({ input }) => {
         const etablisment = await prisma?.faculty.findFirst({
             where: {
