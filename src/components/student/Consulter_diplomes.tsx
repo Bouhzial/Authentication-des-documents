@@ -1,23 +1,24 @@
 import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import { api } from '../../utils/api';
-import { SearchedObejct } from '../../types/types';
 import { CursusUniversitaire, Diplome, Etudiant } from '@prisma/client';
-import Search from '../generic/search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import ViewDiplome from '../generic/DiplomeModal';
+import DiplomaTemplate from './DiplomaTemplate';
 
-export default function ConsulterDiplomes () {
-  const { data: session } = useSession()
-  console.log(session);
-  const diplomas = api.student.diplomas.GetDiplomasByUserEmail.useQuery(session?.user!.email!).data!;
-  const [view, setView] = useState(false);
-  const [diplome, setDiplome] = useState<Diplome & {
-    student: Etudiant & {
-      CursusUniversitaire: CursusUniversitaire[];
-    }
-  }>();
+export default function ConsulterDiplomes() {
+    const {data:session} = useSession()
+    console.log(session);
+    const diplomas = api.student.diplomas.GetDiplomasByUserEmail.useQuery(session?.user!.email!).data!;
+    const [view, setView] = useState(false);
+    const [diplome, setDiplome] = useState<Diplome & {
+        student: Etudiant & {
+            CursusUniversitaire: CursusUniversitaire[];
+        }
+    }>();
+    const Departements  = api.etablisments.GetDepartements.useQuery().data!;
+
   return (
     <div className='p-8 flex h-screen flex-col items-center w-4/5'>
       <div className='flex items-center justify-between w-full'>
@@ -55,8 +56,8 @@ export default function ConsulterDiplomes () {
             ))}
           </tbody>
         </table>
-      </div>
-      {(view && diplome) && <ViewDiplome diplome={diplome} close={() => { setView(false) }} />}
+    </div>
+    {(view && diplome) && <DiplomaTemplate departements={Departements} diplome={diplome} close={() => { setView(false) }} />}
     </div>
   )
 }
