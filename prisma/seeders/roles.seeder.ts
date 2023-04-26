@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client"
 
 export default async (prisma: PrismaClient) => {
+    await prisma.role.deleteMany();
+
     await prisma.role.createMany({
         data: [
             { id: 1, name: "recteur" },

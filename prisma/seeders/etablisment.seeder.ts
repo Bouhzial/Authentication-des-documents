@@ -1,6 +1,10 @@
 import { PrismaClient } from "@prisma/client"
 
 export default async (prisma: PrismaClient) => {
+    await prisma.etablissement.deleteMany();
+    await prisma.faculty.deleteMany();
+    await prisma.departement.deleteMany();
+
     await prisma.etablissement.createMany({
         data: [
             {
@@ -15,27 +19,36 @@ export default async (prisma: PrismaClient) => {
 
     await prisma.faculty.createMany({
         data: [
-            { 
+            {
+                id: 1,
                 etablissement_id: 1,
-                nom: "FEI",
+                nom: "Faculté Informatique",
+            },
+            {
+                id: 2,
+                etablissement_id: 1,
+                nom: "Faculté Electronique",
             }
         ]
     })
     await prisma.departement.createMany({
         data: [
             {
-               
-                nom: "Informatique",
+                id: 1,
+                nom: "SIQ",
+                faculty_id: 1,
                 etablissement_id: 1,
             },
             {
-                
-                nom: "Electronique",
+                id: 2,
+                nom: "IA",
+                faculty_id: 1,
                 etablissement_id: 1,
             },
             {
-              
-                nom: "Mecanique",
+                id: 3,
+                nom: "Telecommunication",
+                faculty_id: 2,
                 etablissement_id: 1,
             },
         ]

@@ -101,11 +101,14 @@ model Faculty {
     etablissement       Etablissement         @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
     User                User[]
     CursusUniversitaire CursusUniversitaire[]
+    Departement         Departement[]
 }
 
 model Departement {
     id                  Int                   @id @default(autoincrement())
     nom                 String
+    faculty_id          Int
+    faculty             Faculty               @relation(fields: [faculty_id], references: [id], onDelete: Cascade)
     etablissement_id    Int
     etablissement       Etablissement         @relation(fields: [etablissement_id], references: [id], onDelete: Cascade)
     User                User[]
@@ -133,6 +136,7 @@ model Diplome {
     student_id     Int
     user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
     user_id        Int
+    encrypted_hash String?  @db.VarChar(280)
 }
 
 model VerificationToken {

@@ -11,7 +11,8 @@ import { InferGetServerSidePropsType } from 'next';
 
 export default function StudentsTable (/*params: InferGetServerSidePropsType<typeof getServerSideProps>*/) {
     const {data:session} = useSession()
-    const studentsDataQuery = api.issuer.students.GetSuccesfulStudents.useQuery(session?.user!.departement_id!).data!;
+    const studentsQuery = api.issuer.students.GetSuccesfulStudents.useQuery();
+    const studentsDataQuery = studentsQuery.data!;
     const [seachedData, setSeachedData] = React.useState(studentsDataQuery);
 
     useEffect(() => {
@@ -22,6 +23,7 @@ export default function StudentsTable (/*params: InferGetServerSidePropsType<typ
         try {
             await createDiplomasMutation.mutateAsync(id)
             toast.success("Diplome crée avec succés en attendant la validation , un email a été envoyé au etudiant")
+            await studentsQuery.refetch()
             //send email to student to notifie him
         } catch (e) {
             toast.error("Erreur lors de la création du diplome")
