@@ -1,6 +1,6 @@
 // encryption.js
 import crypto from 'crypto'
-import { ENCRYPTION_METHOD, ENCYPTION_SECRET_IV_KEY, ENCYPTION_SECRET_KEY } from './constants.js'
+import { ENCRYPTION_METHOD, ENCYPTION_SECRET_IV_KEY, ENCYPTION_SECRET_KEY } from './constants'
 
 // Generate secret hash with crypto to use for encryption
 const key = crypto

@@ -3,21 +3,21 @@ import React, { useState } from 'react'
 import { api } from '../../utils/api';
 import { CursusUniversitaire, Diplome, Etudiant } from '@prisma/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 import ViewDiplome from '../generic/DiplomeModal';
 import DiplomaTemplate from './DiplomaTemplate';
 
-export default function ConsulterDiplomes() {
-    const {data:session} = useSession()
-    console.log(session);
-    const diplomas = api.student.diplomas.GetDiplomasByUserEmail.useQuery(session?.user!.email!).data!;
-    const [view, setView] = useState(false);
-    const [diplome, setDiplome] = useState<Diplome & {
-        student: Etudiant & {
-            CursusUniversitaire: CursusUniversitaire[];
-        }
-    }>();
-    const Departements  = api.etablisments.GetDepartements.useQuery().data!;
+export default function ConsulterDiplomes () {
+  const { data: session } = useSession()
+  console.log(session);
+  const diplomas = api.student.diplomas.GetDiplomasByUserEmail.useQuery(session?.user!.email!).data!;
+  const [view, setView] = useState(false);
+  const [diplome, setDiplome] = useState<Diplome & {
+    student: Etudiant & {
+      CursusUniversitaire: CursusUniversitaire[];
+    }
+  }>();
+  const Departements = api.etablisments.GetDepartements.useQuery().data!;
 
   return (
     <div className='p-8 flex h-screen flex-col items-center w-4/5'>
@@ -35,6 +35,8 @@ export default function ConsulterDiplomes() {
               <th className="text-left pl-4 ">Date</th>
               <th className="text-left pl-4 ">Speciality</th>
               <th className="text-left pl-4 ">Status</th>
+              <th className="text-left pl-4 ">Fichier .usthb</th>
+              <th className="text-left pl-4 ">Voir diplome</th>
             </tr>
           </thead>
           <tbody className='font-medium'>
@@ -49,15 +51,24 @@ export default function ConsulterDiplomes() {
                     <p className="text-white bg-[#00bdfe] rounded-[5px] py-1 text-center w-24">En Attente</p>
                   }
                 </td>
-                <td onClick={() => { setDiplome(diplome); setView(true) }} className="text-left  cursor-pointer pl-4 ">
-                  <FontAwesomeIcon icon={faEye} />
-                </td>
+                {diplome.signedByDoyen && diplome.signedByRector ?
+                  <td className="text-left  cursor-pointer pl-4 ">
+                    <a href={`/uploads/diplomes/${diplome.digitalCertificatePath}`} >
+                      <FontAwesomeIcon icon={faDownload} />
+                    </a>
+                  </td>
+                  : ''}
+                {diplome.signedByDoyen && diplome.signedByRector ?
+                  <td onClick={() => { setDiplome(diplome); setView(true) }} className="text-left  cursor-pointer pl-4 ">
+                    <FontAwesomeIcon icon={faEye} />
+                  </td>
+                  : ''}
               </tr>
             ))}
           </tbody>
         </table>
-    </div>
-    {(view && diplome) && <DiplomaTemplate departements={Departements} diplome={diplome} close={() => { setView(false) }} />}
+      </div>
+      {(view && diplome) && <DiplomaTemplate departements={Departements} diplome={diplome} close={() => { setView(false) }} />}
     </div>
   )
 }

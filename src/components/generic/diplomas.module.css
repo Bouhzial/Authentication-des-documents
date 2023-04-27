@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+.body {
+    width: 11.7in;
+    height: 8.3in;
+    border: 1px solid black;
+    position: relative;
+    line-height: 19px;
+    background: white;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.h1 {
+    margin-block: 20px;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.content {
+    margin: 40px;
+    height: 100%;
+}
+
+.republique {
+    font-size: 0.9rem;
+}
+
+.entete {
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    left: 90px;
+    height: 110px;
+    width: 120px;
+    top: -30px;
+}
+
+.cadre {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.4;
+}
+
+.contentbody {
+    margin-inline: 90px;
+}
+
+.entetebody {
+    font-size: 0.9rem;
+    margin-block: 50px;
+}
+
+.bulletlist {
+    padding-left: 20px;
+}
+
+.bulletpoint {
+    margin-top: 10px
+}
+
+.nomdatenaissance {
+    display: flex;
+    justify-content: space-between;
+}
+
+.datadiplome>p {
+    margin-top: 10px;
+}
+
+.etuddata {
+    font-size: 20px;
+}
+
+.signatures {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-inline: 20px;
+    margin-block: 50px;
+}
+
+.signatures p {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signature {
+    width: 300px;
+}
+
+.qr {
+    width: 100px;
+}

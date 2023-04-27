@@ -127,16 +127,17 @@ model Image {
 }
 
 model Diplome {
-    id             Int      @id @default(autoincrement())
-    type           String
-    date_obtention DateTime @db.Date
-    signedByRector Boolean  @default(false)
-    signedByDoyen  Boolean  @default(false)
-    student        Etudiant @relation(fields: [student_id], references: [id], onDelete: Cascade)
-    student_id     Int
-    user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-    user_id        Int
-    encrypted_hash String?  @db.VarChar(280)
+    id                     Int      @id @default(autoincrement())
+    type                   String
+    date_obtention         DateTime @db.Date
+    signedByRector         Boolean  @default(false)
+    signedByDoyen          Boolean  @default(false)
+    student                Etudiant @relation(fields: [student_id], references: [id], onDelete: Cascade)
+    student_id             Int
+    user                   User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id                Int
+    encrypted_hash         String?  @db.VarChar(280)
+    digitalCertificatePath String?
 }
 
 model VerificationToken {

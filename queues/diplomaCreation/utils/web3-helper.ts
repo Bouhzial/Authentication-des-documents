@@ -3,6 +3,8 @@ import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
 import { CONTRACT_ABI, CONTRACT_ADDRESS, CONTRACT_OWNER } from './constants';
 import { encryptData } from './encryption-helper';
+import { writeFile } from 'fs/promises';
+import path from 'path';
 
 const prisma = new PrismaClient()
 
@@ -51,6 +53,8 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
             }
         }
     });
+    const fileName = `${Date.now()}-${diplome?.student.matricule}.usthb`
+    await writeFile(path.join(__dirname, '../../../public/uploads/diplomes', fileName), encryptData(JSON.stringify(diploma)));
 
     //generate the diploma hash using the diploma data and keccak256
     const diplomaHash = web3.utils.keccak256(JSON.stringify(diploma));
@@ -63,7 +67,7 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
     try {
         await contract.methods.createDiploma(diplomaHash, {
             studentName: `${prenom} ${nom}`,
-            birthDate: `${date_naissance} , ${lieu_naissance}`,
+            birthDate: `${date_naissance}, ${lieu_naissance}`,
             diplomaType: diplome?.type,
             dateOfIssue: diplome?.date_obtention,
             speciality: diplome?.student?.CursusUniversitaire[0]?.specialite
@@ -73,13 +77,15 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
         //encrypt the diploma hash using the AES encryption algorithm
         const diplomaHashEncrypted = encryptData(diplomaHash)
         console.log(diplomaHashEncrypted)
+        console.log(fileName)
         //update the encrypted diploma hash in the database
         await prisma.diplome.update({
             where: {
                 id
             },
             data: {
-                encrypted_hash: diplomaHashEncrypted
+                encrypted_hash: diplomaHashEncrypted,
+                digitalCertificatePath: fileName
             }
         })
 
