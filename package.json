@@ -10,7 +10,8 @@
     "start": "next start",
     "start-diploma-worker": "tsx ./queues/diplomaCreation/worker.ts",
     "start-emails-worker": "tsx ./queues/emails/worker.ts",
-    "heroku-postbuild": "cd queues && ../node_modules/typescript/bin/tsc "
+    "heroku-postbuild": "npm run build && cd queues && ../node_modules/typescript/bin/tsc ",
+    "start-workers": "concurrently \"node queues/diplomaCreation/worker.js\" \"node queues/emails/worker.js\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
