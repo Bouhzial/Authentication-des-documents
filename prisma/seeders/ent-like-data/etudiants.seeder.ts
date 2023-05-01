@@ -33,7 +33,18 @@ export default async (prisma: PrismaClient) => {
                 matricule: "123552245",
                 date_naissance: "1099-01-11",
                 lieu_naissance: "Losandi"
-            }
+            },
+            {
+                id: 4,
+                nom: "Ait Ahmed",
+                prenom: "Dyhia",
+                email: "dyhiaaitahmed92@gmail.com",
+                telephone: "05931431",
+                matricule: "21210434143",
+                date_naissance: "2002-01-11",
+                lieu_naissance: "Losandi"
+            },
+
         ]
     })
     console.log('Added Etudiants data')
