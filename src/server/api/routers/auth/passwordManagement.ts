@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
+import { prisma } from '../../../db'
 
 export const t = initTRPC.create();
 export const passwordManagementRouter = createTRPCRouter({

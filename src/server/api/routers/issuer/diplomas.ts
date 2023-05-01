@@ -6,6 +6,7 @@ import { createTRPCRouter, issuerProcedure, protectedProcedure, publicProcedure,
 import { hashSync } from "bcrypt";
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
 import { EmailType, createEmailJob } from "../../../queues";
+import { prisma } from '../../../db'
 
 
 export const t = initTRPC.create();

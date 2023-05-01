@@ -1,11 +1,12 @@
 import { initTRPC } from "@trpc/server";
-import { createTRPCRouter ,studentProcedure} from "../../trpc";
+import { createTRPCRouter, studentProcedure } from "../../trpc";
 import { z } from "zod";
+import { prisma } from '../../../db'
 
 export const t = initTRPC.create();
 export const diplomasRouter = createTRPCRouter({
 
-    GetDiplomasByUserEmail: studentProcedure.input(z.string()).query(async ({ input}) => {
+    GetDiplomasByUserEmail: studentProcedure.input(z.string()).query(async ({ input }) => {
         const id = await prisma.etudiant.findFirst({
             where: {
                 email: input,
@@ -22,11 +23,12 @@ export const diplomasRouter = createTRPCRouter({
                 student: {
                     include: {
                         CursusUniversitaire: true
+                    }
                 }
-            }}
+            }
         })
         console.log(diplomas);
-        
+
         return diplomas
     })
 });

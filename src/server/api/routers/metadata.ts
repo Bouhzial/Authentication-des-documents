@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { prisma } from '../../db'
 
 
 export const t = initTRPC.create();

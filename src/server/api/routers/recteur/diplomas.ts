@@ -1,11 +1,8 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { Role } from "../../../../types/types";
 import { createTRPCRouter, issuerProcedure, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
-import { hashSync } from "bcrypt";
-import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
 import { createDiplomaInBlockChain } from "../../../queues";
+import { prisma } from '../../../db'
 
 export const t = initTRPC.create();
 export const diplomasRouter = createTRPCRouter({

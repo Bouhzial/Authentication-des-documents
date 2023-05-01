@@ -5,6 +5,7 @@ import { Role } from "../../../../types/types";
 import { createTRPCRouter, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
 import { EmailType, createEmailJob } from "../../../queues";
+import { prisma } from '../../../db'
 
 export const t = initTRPC.create();
 export const userRouter = createTRPCRouter({
