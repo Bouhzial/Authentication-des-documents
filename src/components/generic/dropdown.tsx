@@ -5,11 +5,12 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 interface Props {
     className?: string;
     options: string[];
+    optionsValues?: number[];
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     value?: string | number;
 
 }
-export default function Dropdown ({ options, onChange, value, className }: Props) {
+export default function Dropdown ({ options, optionsValues, onChange, value, className }: Props) {
     const [clicked, setClicked] = React.useState(false);
 
     return (
@@ -17,7 +18,7 @@ export default function Dropdown ({ options, onChange, value, className }: Props
             <select onChange={onChange} value={value} className={`cursor-pointer bg-white w-full h-16 outline-none text-lg font-medium py-3 px-5 rounded-2xl shadow-lg pointer-events-auto focus:shadow-xl transition-all ${value == '-1' ? 'text-gray-500' : ''}`}>
                 {options.map((option, index) => (
                     index === 0 ? <option selected value={-1}>{option}</option> :
-                        <option className='bg-blue text-black' value={index}>{option}</option>
+                        <option className='bg-blue text-black' value={optionsValues ? optionsValues[index - 1] : index}>{option}</option>
                 ))}
             </select>
             <FontAwesomeIcon icon={faChevronDown} style={{ pointerEvents: 'none' }} className={`absolute h-6 top-1/3 right-[20px] ${clicked ? 'rotate-180 transition-all' : "rotate-0 transition-all"}`} />

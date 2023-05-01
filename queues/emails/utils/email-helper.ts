@@ -5,18 +5,19 @@ import { readFile } from "fs/promises";
 import nodemailer from "nodemailer";
 import { join } from "path";
 import { passwordConfigTemplate } from "./template/passwordConfig";
+require('dotenv').config();
 
 
 const prisma = new PrismaClient()
 
 
 let transporter = nodemailer.createTransport({
-    host: "mail.tessouira.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-        user: "blockauth@tessouira.com", // generated ethereal user
-        pass: "bNFph-Wv7F%@", // generated ethereal password
+        user: process.env.EMAIL, // generated ethereal user
+        pass: process.env.EMAIL_PASSWORD // generated ethereal password
     },
 });
 

@@ -1,28 +1,28 @@
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 export const t = initTRPC.create();
 
-export const etablismentRouter:any = createTRPCRouter({
+export const etablismentRouter = createTRPCRouter({
 
-    GetFacultiesByEtablissement: t.procedure.input(z.number()).mutation(async ({ input }) => {
+    GetFacultiesByEtablissement: protectedProcedure.query(async ({ ctx }) => {
         const faculties = await prisma?.faculty.findMany({
             where: {
-                etablissement_id: input
+                etablissement_id: ctx.session.user.etablissement_id
             }
         })
         return faculties
     }),
-    GetDepartementsByEtablissement: t.procedure.input(z.number()).mutation(async ({ input }) => {
+    GetDepartementsByEtablissement: protectedProcedure.query(async ({ ctx }) => {
         const departements = await prisma?.departement.findMany({
             where: {
-                etablissement_id: input
+                etablissement_id: ctx.session.user.etablissement_id
             }
         })
         return departements
     }),
 
-    GetDepartements: t.procedure.query(async() => {
+    GetDepartements: t.procedure.query(async () => {
         const departements = await prisma?.departement.findMany({})
         return departements
     }),

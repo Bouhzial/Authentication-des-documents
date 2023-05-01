@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
-import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
+import { EmailType, createEmailJob } from "../../../queues";
 
 export const t = initTRPC.create();
 export const userRouter = createTRPCRouter({
@@ -57,14 +57,14 @@ export const userRouter = createTRPCRouter({
     })).mutation(async ({ input }) => {
 
         const { nom, prenom, email, date_naissance, leui_naissance, telephone, matricule, role_id, faculty_id, departement_id, image } = input
-       
+
         const userWithEmail = await prisma?.user.findFirst({
             where: {
                 email
             }
         })
 
-        
+
 
         if (userWithEmail) {
             throw new TRPCError({ code: "BAD_REQUEST", message: "User Exists" });
@@ -95,8 +95,15 @@ export const userRouter = createTRPCRouter({
             })
         }
 
-        
-         await sendPasswordConfigurationEmail(user.id, user.nom, user.email);
+
+        //  await sendPasswordConfigurationEmail(user.id, user.nom, user.email);
+
+        await createEmailJob({
+            emailType: EmailType.configPassword,
+            userId: user.id,
+            name: user.nom,
+            userEmail: user.email
+        });
 
         const { password, ...userDataWithoutPassword } = user
         return userDataWithoutPassword
