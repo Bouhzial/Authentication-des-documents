@@ -1,2 +1,3 @@
 web: npm run start
-workers: npm run start-workers
+worker-diplomas: npm run start-diploma-worker
+worker-emails: npm run start-emails-worker

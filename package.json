@@ -9,8 +9,7 @@
     "lint": "next lint",
     "start": "next start",
     "start-diploma-worker": "tsx ./queues/diplomaCreation/worker.ts",
-    "start-emails-worker": "tsx ./queues/emails/worker.ts",
-    "start-workers": "concurrently \"npm run start-diploma-worker\" \"npm run start-emails-worker\""
+    "start-emails-worker": "tsx ./queues/emails/worker.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
