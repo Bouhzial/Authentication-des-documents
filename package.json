@@ -8,9 +8,10 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
+    "tsc": "./node_modules/typescript/bin/tsc",
     "start-diploma-worker": "tsx ./queues/diplomaCreation/worker.ts",
     "start-emails-worker": "tsx ./queues/emails/worker.ts",
-    "heroku-postbuild": "cd queues && tsc "
+    "heroku-postbuild": "cd queues && npm run tsc "
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -45,7 +46,6 @@
     "react-hot-toast": "^2.4.0",
     "squirrelly": "^8.0.8",
     "superjson": "1.9.1",
-    "tsc": "^2.0.4",
     "tsx": "^3.12.6",
     "uuidv4": "^6.2.13",
     "web3": "^1.9.0",
