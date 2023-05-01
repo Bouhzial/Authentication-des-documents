@@ -95,8 +95,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"diplomaHash\",\"type\":\"string\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"studentName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"birthDate\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"diplomaType\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"dateOfIssue\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"speciality\",\"type\":\"string\"}],\"internalType\":\"struct DiplomaContract.Diploma\",\"name\":\"diplomaData\",\"type\":\"tuple\"}],\"name\":\"createDiploma\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"diplomaHash\",\"type\":\"string\"}],\"name\":\"getDiploma\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"studentName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"birthDate\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"diplomaType\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"dateOfIssue\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"speciality\",\"type\":\"string\"}],\"internalType\":\"struct DiplomaContract.Diploma\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/DiplomaContract.sol\":\"DiplomaContract\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/DiplomaContract.sol\":{\"keccak256\":\"0x61ad32f5f7f1b6fb1e91d13a6543309e94eeb239af1d24fd7b315f8c611f86c5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://420670ff96bc2fac913a2c407132cc223f834a498e7a3d65b754aae10c14d69a\",\"dweb:/ipfs/QmPWkWL6YvTCyLkFqvEYNg6Q5q7NGVgHm87TCqHBnY91F4\"]}},\"version\":1}",
@@ -8763,13 +8762,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x2376733b5Faf11b8101CF55b00b0B9E534013120",
-      "transactionHash": "0xebfe4f2602a8e8f24af821383ab2cf0803af63f00db2271769c39aefd7fd119b"
+      "address": "0xD097Dd3157134500433E0D45dcF093F47391c0Dc",
+      "transactionHash": "0x80e2a2b9ee6713d15f47863eafb973a3c0ee9bb3140c44d3ebcdb08f20eea52c"
     }
   },
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-04-23T16:50:41.562Z",
-  "networkType": "ethereum",
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-04-29T22:36:11.639Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

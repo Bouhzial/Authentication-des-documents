@@ -1,6 +1,6 @@
 import { CursusUniversitaire, Diplome, Etudiant } from '@prisma/client';
 import React from 'react'
-import { QRCodeCanvas } from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import styles from './diplomas.module.css';
 interface Props {
   diplome: Diplome & {
@@ -71,7 +71,7 @@ export default function Diploma ({ diplome, departement }: Props) {
               </p>
               <p>Qr d'authentification:
                 <div className={styles.qr} >
-                  {diplome?.encrypted_hash && <QRCodeCanvas value={diplome?.encrypted_hash} />}
+                  {diplome?.encrypted_hash && <QRCodeSVG height={'auto'} width={'auto'} className='w-full bg-white' value={diplome?.encrypted_hash} />}
                 </div>
               </p>
               <p>Le Recteur de l'universite:

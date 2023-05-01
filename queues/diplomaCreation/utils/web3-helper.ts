@@ -64,12 +64,22 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
     //call the contract method to create a new diploma
     const { nom, prenom, date_naissance, lieu_naissance } = diplome?.student as Etudiant
 
+    console.log(
+        {
+            studentName: `${prenom} ${nom}`,
+            birthDate: `${date_naissance}, ${lieu_naissance}`,
+            diplomaType: diplome?.type,
+            dateOfIssue: `${diplome?.date_obtention.toISOString().slice(0, 10)}`,
+            speciality: diplome?.student?.CursusUniversitaire[0]?.specialite
+        }
+    )
+
     try {
         await contract.methods.createDiploma(diplomaHash, {
             studentName: `${prenom} ${nom}`,
             birthDate: `${date_naissance}, ${lieu_naissance}`,
             diplomaType: diplome?.type,
-            dateOfIssue: diplome?.date_obtention,
+            dateOfIssue: `${diplome?.date_obtention.toISOString().slice(0, 10)}`,
             speciality: diplome?.student?.CursusUniversitaire[0]?.specialite
         }).send({
             from: CONTRACT_OWNER, gas: "150000"

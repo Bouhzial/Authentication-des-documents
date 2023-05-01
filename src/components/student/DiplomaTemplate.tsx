@@ -26,7 +26,7 @@ export default function DiplomaTemplate ({ diplome, close, departements }: Props
   const printRef = React.useRef();
   const handleDownloadPdf = async () => {
     const element = printRef.current;
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, { scale: 5 });
     const data = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF('l', 'in', [8.3, 11.7]);

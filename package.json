@@ -23,6 +23,7 @@
     "@trpc/next": "^10.8.1",
     "@trpc/react-query": "^10.8.1",
     "@trpc/server": "^10.8.1",
+    "@truffle/hdwallet-provider": "^2.1.10",
     "bcrypt": "^5.1.0",
     "bullmq": "^3.12.0",
     "dotenv": "^16.0.3",
