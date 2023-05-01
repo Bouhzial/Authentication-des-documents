@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, verificatorProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
-import emailjs from 'emailjs-com';
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
 import { createDiplomaInBlockChain } from "../../../queues";
 

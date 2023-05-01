@@ -5,43 +5,42 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
 
-import { Document, PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
-
 interface Props {
-  diplome: Diplome & {
-    student: Etudiant & {
-      CursusUniversitaire: CursusUniversitaire[];
-    }
-  },
-  close: (val: boolean) => void;
-  departements: Departement[];
+    diplome: Diplome & {
+            student: Etudiant & {
+                CursusUniversitaire: CursusUniversitaire[];
+            }
+        },
+        close: (val: boolean) => void;
+    departements: Departement[];
 }
 
-export default function DiplomaTemplate ({ diplome, close, departements }: Props) {
-  const depaetment = departements.find((dep) => dep.id === diplome.student.CursusUniversitaire[0]?.departement_id)
-  function change () {
-    close(false)
-  }
+export default function DiplomaTemplate({ diplome, close, departements }: Props) {
+    const depaetment = departements.find((dep) => dep.id === diplome.student.CursusUniversitaire[0] ? .departement_id)
 
-  const printRef = React.useRef();
-  const handleDownloadPdf = async () => {
-    const element = printRef.current;
-    const canvas = await html2canvas(element, { scale: 5 });
-    const data = canvas.toDataURL('image/png');
+    function change() {
+        close(false)
+    }
 
-    const pdf = new jsPDF('l', 'in', [8.3, 11.7]);
-    const imgProperties = pdf.getImageProperties(data);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight =
-      (imgProperties.height * pdfWidth) / imgProperties.width;
+    const printRef = React.useRef();
+    const handleDownloadPdf = async () => {
+        const element = printRef.current;
+        const canvas = await html2canvas(element, { scale: 5 });
+        const data = canvas.toDataURL('image/png');
 
-    pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('diploma.pdf');
-  };
+        const pdf = new jsPDF('l', 'in', [8.3, 11.7]);
+        const imgProperties = pdf.getImageProperties(data);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight =
+            (imgProperties.height * pdfWidth) / imgProperties.width;
+
+        pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('diploma.pdf');
+    };
 
 
-  return (
-    <div className='flex absolute top-0 left-0 justify-center items-center h-screen w-screen bg-slate-600 bg-opacity-50'>
+    return (
+        <div className='flex absolute top-0 left-0 justify-center items-center h-screen w-screen bg-slate-600 bg-opacity-50'>
       <div className='top-0 absolute left-0 h-[12.5%] w-screen bg-transparent' onClick={change}></div>
       <div className='absolute top-0 left-0 h-screen w-[12.5%] bg-transparent' onClick={change}></div>
       <div className='absolute bottom-0 right-0 h-screen w-[12.5%] bg-transparent' onClick={change}></div>
@@ -51,5 +50,5 @@ export default function DiplomaTemplate ({ diplome, close, departements }: Props
       </div>
       <button className="w-36 h-10 bg-link-text-blue text-white cursor-pointer absolute top-2" onClick={handleDownloadPdf}>Telecharger</button>
     </div>
-  )
+    )
 }

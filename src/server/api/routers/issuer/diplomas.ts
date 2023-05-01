@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, issuerProcedure, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
-import emailjs from 'emailjs-com';
 import { sendPasswordConfigurationEmail } from "../../../../utils/email-sending";
 import { EmailType, createEmailJob } from "../../../queues";
 

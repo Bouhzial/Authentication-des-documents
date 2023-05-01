@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Role } from "../../../../types/types";
 import { createTRPCRouter, issuerProcedure, protectedProcedure, publicProcedure, recteurProcedure } from "../../trpc";
 import { hashSync } from "bcrypt";
-import emailjs from 'emailjs-com';
 
 export const t = initTRPC.create();
 export const studentsRouter = createTRPCRouter({
