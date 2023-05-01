@@ -8,10 +8,9 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "tsc": "./node_modules/typescript/bin/tsc",
     "start-diploma-worker": "tsx ./queues/diplomaCreation/worker.ts",
     "start-emails-worker": "tsx ./queues/emails/worker.ts",
-    "heroku-postbuild": "cd queues && npm run tsc "
+    "heroku-postbuild": "cd queues && ../node_modules/typescript/bin/tsc "
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",

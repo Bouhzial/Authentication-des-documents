@@ -1,3 +1,3 @@
 web: npm run start
-worker-diplomas: npm run start-diploma-worker
-worker-emails: npm run start-emails-worker
+worker-diplomas: node queues/diplomaCreation/worker.js
+worker-emails: node queues/emails/worker.js
