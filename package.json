@@ -9,7 +9,8 @@
     "lint": "next lint",
     "start": "next start",
     "start-diploma-worker": "tsx ./queues/diplomaCreation/worker.ts",
-    "start-emails-worker": "tsx ./queues/emails/worker.ts"
+    "start-emails-worker": "tsx ./queues/emails/worker.ts",
+    "start-workers": "concurrently \"npm run start-diploma-worker\" \"npm run start-emails-worker\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -26,6 +27,7 @@
     "@truffle/hdwallet-provider": "^2.1.10",
     "bcrypt": "^5.1.0",
     "bullmq": "^3.12.0",
+    "concurrently": "^8.0.1",
     "dotenv": "^16.0.3",
     "emailjs-com": "^3.2.0",
     "formidable": "^2.1.1",
