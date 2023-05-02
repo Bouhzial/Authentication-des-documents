@@ -11,3 +11,5 @@ export const ENCYPTION_SECRET_KEY = process.env.SECRET_KEY || "secretRandomShitT
 export const ENCYPTION_SECRET_IV_KEY = process.env.SECRET_IV_KEY || "secretRandomShitThatNoOneKnows#2"
 
 export const ENCRYPTION_METHOD = process.env.ENCRYPTION_METHOD || "aes-256-cbc"
+
+export const WEB3_API = process.env.WEB3_API || "http://localhost:7545"

@@ -1,14 +1,14 @@
 import { Diplome, Etudiant, PrismaClient } from '@prisma/client';
 import Web3 from 'web3'
 import { AbiItem } from 'web3-utils'
-import { CONTRACT_ABI, CONTRACT_ADDRESS, CONTRACT_OWNER } from './constants';
+import { CONTRACT_ABI, CONTRACT_ADDRESS, CONTRACT_OWNER, WEB3_API } from './constants';
 import { encryptData } from './encryption-helper';
-import { writeFile } from 'fs/promises';
+import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
 
 const prisma = new PrismaClient()
 
-let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
+let web3 = new Web3(new Web3.providers.HttpProvider(WEB3_API))
 
 
 
@@ -53,8 +53,13 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
             }
         }
     });
+
+    const folder = path.join(__dirname, '../../../public/uploads/diplomes');
+    if (!existsSync(folder)) {
+        mkdirSync(folder);
+    }
     const fileName = `${Date.now()}-${diplome?.student.matricule}.usthb`
-    await writeFile(path.join(__dirname, '../../../public/uploads/diplomes', fileName), encryptData(JSON.stringify(diploma)));
+    writeFileSync(path.join(folder, fileName), encryptData(JSON.stringify(diploma)));
 
     //generate the diploma hash using the diploma data and keccak256
     const diplomaHash = web3.utils.keccak256(JSON.stringify(diploma));
