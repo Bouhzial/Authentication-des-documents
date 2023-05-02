@@ -56,7 +56,7 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
 
     const folder = path.join(__dirname, '../../../public/uploads/diplomes');
     if (!existsSync(folder)) {
-        mkdirSync(folder);
+        mkdirSync(folder, { recursive: true });
     }
     const fileName = `${Date.now()}-${diplome?.student.matricule}.usthb`
     writeFileSync(path.join(folder, fileName), encryptData(JSON.stringify(diploma)));
