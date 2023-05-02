@@ -80,6 +80,15 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
     )
 
     try {
+        let contractOwner = CONTRACT_OWNER;
+        if (process.env.PRIVATE_KEY_OWNER) {
+            const signer = web3.eth.accounts.privateKeyToAccount(
+                process.env.PRIVATE_KEY_OWNER
+            );
+            web3.eth.accounts.wallet.add(signer);
+            contractOwner = signer.address
+        }
+
         await contract.methods.createDiploma(diplomaHash, {
             studentName: `${prenom} ${nom}`,
             birthDate: `${date_naissance}, ${lieu_naissance}`,
@@ -87,7 +96,7 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
             dateOfIssue: `${diplome?.date_obtention.toISOString().slice(0, 10)}`,
             speciality: diplome?.student?.CursusUniversitaire[0]?.specialite
         }).send({
-            from: CONTRACT_OWNER, gas: "150000"
+            from: contractOwner, gas: "150000"
         })
         //encrypt the diploma hash using the AES encryption algorithm
         const diplomaHashEncrypted = encryptData(diplomaHash)
