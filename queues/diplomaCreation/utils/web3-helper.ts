@@ -79,6 +79,9 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
         }
     )
 
+    console.log("NA3ADIN RBK")
+
+
     try {
         let contractOwner = CONTRACT_OWNER;
         if (process.env.PRIVATE_KEY_OWNER) {
@@ -89,15 +92,22 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
             contractOwner = signer.address
         }
 
-        await contract.methods.createDiploma(diplomaHash, {
+        const method = contract.methods.createDiploma(diplomaHash, {
             studentName: `${prenom} ${nom}`,
             birthDate: `${date_naissance}, ${lieu_naissance}`,
             diplomaType: diplome?.type,
             dateOfIssue: `${diplome?.date_obtention.toISOString().slice(0, 10)}`,
             speciality: diplome?.student?.CursusUniversitaire[0]?.specialite
-        }).send({
-            from: contractOwner, gas: "150000"
         })
+        const estimatedGas = await method.estimateGas({
+            from: contractOwner
+        })
+        console.log(estimatedGas)
+        await method
+            .send({
+                from: contractOwner,
+                gas: estimatedGas
+            })
         //encrypt the diploma hash using the AES encryption algorithm
         const diplomaHashEncrypted = encryptData(diplomaHash)
         console.log(diplomaHashEncrypted)
