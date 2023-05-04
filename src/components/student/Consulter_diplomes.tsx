@@ -51,9 +51,9 @@ export default function ConsulterDiplomes () {
                     <p className="text-white bg-[#00bdfe] rounded-[5px] py-1 text-center w-24">En Attente</p>
                   }
                 </td>
-                {diplome.signedByDoyen && diplome.signedByRector ?
+                {diplome.signedByDoyen && diplome.signedByRector && diplome.digitalCertificatePath ?
                   <td className="text-left  cursor-pointer pl-4 ">
-                    <a href={`/uploads/diplomes/${diplome.digitalCertificatePath}`} >
+                    <a href={`${diplome.digitalCertificatePath}`} >
                       <FontAwesomeIcon icon={faDownload} />
                     </a>
                   </td>
