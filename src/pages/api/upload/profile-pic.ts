@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerAuthSession } from "../../../server/auth";
 import formidable from "formidable";
 import { Role } from "../../../types/types";
-
+import { prisma } from '../../../server/db'
 import { v2 as cloudinary } from 'cloudinary'
 
 //configure cloudinary
