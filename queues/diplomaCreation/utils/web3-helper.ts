@@ -5,11 +5,17 @@ import { CONTRACT_ABI, CONTRACT_ADDRESS, CONTRACT_OWNER, WEB3_API } from './cons
 import { encryptData } from './encryption-helper';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
-
+import { v2 as cloudinary } from 'cloudinary'
 const prisma = new PrismaClient()
 
 let web3 = new Web3(new Web3.providers.HttpProvider(WEB3_API))
 
+//configure cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 
 
@@ -61,8 +67,18 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
     const fileName = `${Date.now()}-${diplome?.student.matricule}.usthb`
     writeFileSync(path.join(folder, fileName), encryptData(JSON.stringify(diploma)));
 
+    console.log("nikmok")
+    //upload the diploma to cloudinary
+    const cloudinaryResponse = await cloudinary.uploader.upload(path.join(folder, fileName), {
+        resource_type: "raw",
+        public_id: `diplomas/${fileName}`,
+        overwrite: true
+    });
+
     //generate the diploma hash using the diploma data and keccak256
     const diplomaHash = web3.utils.keccak256(JSON.stringify(diploma));
+
+    console.log("HASHED RAW DATA :", encryptData(JSON.stringify(diploma)))
 
     console.log(diplomaHash);
 
@@ -119,7 +135,7 @@ export const createDiplomaContractCall = async (diploma: Diplome) => {
             },
             data: {
                 encrypted_hash: diplomaHashEncrypted,
-                digitalCertificatePath: fileName
+                digitalCertificatePath: cloudinaryResponse.secure_url
             }
         })
 
