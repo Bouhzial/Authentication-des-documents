@@ -46,7 +46,7 @@ export default function UserDashBoard () {
 
   function searchData () {
     if (search.serached.length > 0) {
-      const newData = usersData.filter((user:User) => {
+      const newData = usersData.filter((user: User) => {
         if (search.type == 'nom') {
           return user.nom.toLowerCase().includes(search.serached.toLowerCase()) || user.prenom.toLowerCase().includes(search.serached.toLowerCase())
         }
