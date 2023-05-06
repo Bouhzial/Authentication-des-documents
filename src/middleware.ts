@@ -34,12 +34,18 @@ const guestPaths = [
 export async function middleware (req: NextRequest, _next: NextFetchEvent) {
     const { pathname } = req.nextUrl;
 
+    const url = req.nextUrl.clone()
+    if (url.pathname === '/') {
+        url.pathname = '/auth'
+        return NextResponse.redirect(url)
+    }
+
     const matchesProtectedPath = protectedPaths.some(({ path }) =>
         pathname.startsWith(path)
     );
     if (matchesProtectedPath) {
         const secret = env.NEXTAUTH_SECRET;
-        const token = await getToken({ req ,secret });
+        const token = await getToken({ req, secret });
         if (!token) {
             return NextResponse.redirect(new URL(`/auth`, req.url));
         }
