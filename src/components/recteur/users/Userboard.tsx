@@ -89,22 +89,22 @@ export default function UserDashBoard () {
   }
   function getRole (id: number) {
     if (id == 1) {
-      return "recteur"
+      return "Recteur"
     }
     else if (id == 2) {
-      return "chef departement"
+      return "Chef Departement"
     }
     else if (id == 3) {
-      return "doyen"
+      return "Doyen"
     }
     else if (id == 4) {
-      return "etudiant"
+      return "Etudiant"
     }
     return "inconnu"
   }
 
   return (
-    <div className='p-8 flex h-screen flex-col items-center w-4/5  '>
+    <div className='p-8 flex h-screen flex-col items-center  '>
       <div className='flex items-center justify-between w-full'>
         <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Gerer Les Utilisateurers</h1>
         <Search fileds={["nom", "role", "email", "matricule"]} change={(val: SearchedObejct) => { setSearch(val); searchData() }} />

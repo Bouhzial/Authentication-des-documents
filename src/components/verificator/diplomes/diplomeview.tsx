@@ -56,7 +56,7 @@ export default function DiplomeView () {
 
   return (
 
-    <div className='m-8 flex flex-col h-full w-full items-center'>
+    <div className='m-8 flex flex-col h-full items-center'>
       <div className='flex items-center justify-between w-full'>
         <div>
           <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Verifier Les Diplomes</h1>
