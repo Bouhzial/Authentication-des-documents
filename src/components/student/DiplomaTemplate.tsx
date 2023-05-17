@@ -26,7 +26,7 @@ export default function DiplomaTemplate ({ diplome, close, departements }: Props
     const handleDownloadPdf = async () => {
         const element = printRef.current;
         if (!element) return;
-        const canvas = await html2canvas(element, { scale: 5 });
+        const canvas = await html2canvas(element, { scale: 3 });
         const data = canvas.toDataURL('image/png');
 
         const pdf = new jsPDF('l', 'in', [8.3, 11.7]);
@@ -41,7 +41,7 @@ export default function DiplomaTemplate ({ diplome, close, departements }: Props
 
 
     return (
-        <div className='flex absolute top-0 left-0 justify-center items-center h-screen w-screen bg-slate-600 bg-opacity-50'>
+        <div className='flex absolute top-0 left-0 justify-center items-center h-screen w-screen bg-slate-600 bg-opacity-50 z-[9999]'>
             <div className='top-0 absolute left-0 h-[12.5%] w-screen bg-transparent' onClick={change}></div>
             <div className='absolute top-0 left-0 h-screen w-[12.5%] bg-transparent' onClick={change}></div>
             <div className='absolute bottom-0 right-0 h-screen w-[12.5%] bg-transparent' onClick={change}></div>

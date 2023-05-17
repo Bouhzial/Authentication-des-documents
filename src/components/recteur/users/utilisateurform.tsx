@@ -98,23 +98,24 @@ export default function UserForm () {
     }
 
     return (
-        <div className="w-4/5 p-8 place-items-center grid grid-cols-4 justify-center items-center h-screen overflow-y-scroll scrollbar scrollbar-thumb-slate-600 scroll-smooth">
+        <div className="w-full p-8 place-items-center flex flex-col md:grid md:grid-cols-4 justify-center items-center md:h-screen overflow-y-scroll scrollbar scrollbar-thumb-slate-600 scroll-smooth max-w-7xl mx-auto">
             <h1 className="text-3xl text-center col-span-4 pt-4 mt-10 font-bold text-link-text-blue">Ajouter Utilisateur</h1>
             <CircularImageInput ref={imageInput} onChange={(file) => setFile(file)} />
-            <Input className='w-2/3' type="text" placeholder="Nom" onChange={(e) => setUser({ ...user, nom: e.target.value })} value={user.nom} icon={faUser} />
-            <Input className='w-2/3' type="text" placeholder="Prenom" onChange={(e) => setUser({ ...user, prenom: e.target.value })} value={user.prenom} icon={faUser} />
-            <Input className='w-2/3' type="number" placeholder="Matricule" onChange={(e) => setUser({ ...user, matricule: e.target.value })} value={user.matricule} icon={faUser} />
-            <Input className='w-2/3' type="text" placeholder="Date de Naissance" onChange={(e) => setUser({ ...user, date_naissance: e.target.value })} value={user.date_naissance} icon={faCalendar} />
-            <Input className='w-2/3' type="text" placeholder="leui de Naissance" onChange={(e) => setUser({ ...user, leui_naissance: e.target.value })} value={user.leui_naissance} icon={faLocationDot} />
-            <Input className='w-2/3' type="email" placeholder="Email" onChange={(e) => setUser({ ...user, email: e.target.value })} value={user.email} icon={faEnvelope} />
-            <Input className='w-2/3' type="number" placeholder="Telephone" onChange={(e) => setUser({ ...user, telephone: e.target.value })} value={user.telephone} icon={faPhone} />
-            <Dropdown onChange={(e) => setUser({ ...user, role_id: Number(e.target.value) })} value={user.role_id} options={["Type de Utilisateur", ...userRoles]} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="text" placeholder="Nom" onChange={(e) => setUser({ ...user, nom: e.target.value })} value={user.nom} icon={faUser} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="text" placeholder="Prenom" onChange={(e) => setUser({ ...user, prenom: e.target.value })} value={user.prenom} icon={faUser} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="number" placeholder="Matricule" onChange={(e) => setUser({ ...user, matricule: e.target.value })} value={user.matricule} icon={faUser} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="text" placeholder="Date de Naissance" onChange={(e) => setUser({ ...user, date_naissance: e.target.value })} value={user.date_naissance} icon={faCalendar} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="text" placeholder="leui de Naissance" onChange={(e) => setUser({ ...user, leui_naissance: e.target.value })} value={user.leui_naissance} icon={faLocationDot} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="email" placeholder="Email" onChange={(e) => setUser({ ...user, email: e.target.value })} value={user.email} icon={faEnvelope} />
+            <Input className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' type="number" placeholder="Telephone" onChange={(e) => setUser({ ...user, telephone: e.target.value })} value={user.telephone} icon={faPhone} />
+            <Dropdown onChange={(e) => setUser({ ...user, role_id: Number(e.target.value) })} value={user.role_id} options={["Type de Utilisateur", ...userRoles]} className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2' />
             {faculties ?
                 <Dropdown
                     onChange={(e) => setUser({ ...user, faculty_id: Number(e.target.value) })}
                     value={user.faculty_id}
                     options={["Faculté", ...(faculties?.map(({ nom }) => nom))]}
                     optionsValues={faculties?.map(({ id }) => id)}
+                    className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2'
                 />
                 : null}
             {departements ?
@@ -122,9 +123,10 @@ export default function UserForm () {
                     value={user.departement_id}
                     options={["Departement", ...(departements.map(({ nom }) => nom))]}
                     optionsValues={departements?.map(({ id }) => id)}
+                    className='w-full md:w-2/3 mt-10 md:m-0 max-w-[400px] md:max-w-[500px] md:col-span-2'
                 />
                 : null}
-            <button disabled={createUserMutation.isLoading} onClick={handleSubmit} className="col-start-2 col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
+            <button disabled={createUserMutation.isLoading} onClick={handleSubmit} className="w-full my-10 md:my-0 md:col-start-2 md:col-span-2 items-center text-lg font-medium py-4 w-96 text-white m-4 shadow-md hover:shadow-xl bg-link-text-blue rounded-xl">Ajouter</button>
         </div>
     )
 }

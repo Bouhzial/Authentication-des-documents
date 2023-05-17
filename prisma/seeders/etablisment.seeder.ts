@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client"
+import { DEPARTEMENTS } from "./raw-data/departements";
+import { FACULTIES } from "./raw-data/faculties";
 
 export default async (prisma: PrismaClient) => {
     await prisma.etablissement.deleteMany();
@@ -9,49 +11,19 @@ export default async (prisma: PrismaClient) => {
         data: [
             {
                 id: 1,
-                nom: "ENSI",
-                adresse: "Tunis",
+                nom: "USTHB",
+                adresse: "Bab Ezzouar",
                 telephone: 0,
-                email: "das@gmail.com",
+                email: "usthb@usthb.com",
             }
         ]
     })
 
     await prisma.faculty.createMany({
-        data: [
-            {
-                id: 1,
-                etablissement_id: 1,
-                nom: "Faculté Informatique",
-            },
-            {
-                id: 2,
-                etablissement_id: 1,
-                nom: "Faculté Electronique",
-            }
-        ]
+        data: FACULTIES
     })
     await prisma.departement.createMany({
-        data: [
-            {
-                id: 1,
-                nom: "SIQ",
-                faculty_id: 1,
-                etablissement_id: 1,
-            },
-            {
-                id: 2,
-                nom: "IA",
-                faculty_id: 1,
-                etablissement_id: 1,
-            },
-            {
-                id: 3,
-                nom: "Telecommunication",
-                faculty_id: 2,
-                etablissement_id: 1,
-            },
-        ]
+        data: DEPARTEMENTS
     })
 }
 console.log("Added Etablissement data")

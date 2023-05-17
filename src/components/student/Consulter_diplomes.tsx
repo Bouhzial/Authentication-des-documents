@@ -20,7 +20,7 @@ export default function ConsulterDiplomes () {
   const Departements = api.etablisments.GetDepartements.useQuery().data!;
 
   return (
-    <div className='p-8 flex h-screen flex-col items-center w-4/5'>
+    <div className='p-8 flex h-screen flex-col items-center'>
       <div className='flex items-center justify-between w-full'>
         <div>
           <h1 className="mr-2 text-3xl font-bold text-link-text-blue">Consulter Les Diplomes</h1>
