@@ -1,10 +1,18 @@
 import { parseForm, FormidableError } from "../../../utils/parse-form";
-
-
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerAuthSession } from "../../../server/auth";
 import formidable from "formidable";
 import { Role } from "../../../types/types";
+import { prisma } from '../../../server/db'
+import { v2 as cloudinary } from 'cloudinary'
+
+//configure cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 
 export const config = {
     api: {
@@ -51,6 +59,14 @@ const handler = async (
             error: "no image sent !",
         });
 
+        const cloudinaryResponse = await cloudinary.uploader.upload((files?.files as formidable.File).filepath,
+            {
+                folder: "profile-pics",
+                public_id: (files?.files as formidable.File).newFilename,
+                resource_type: "auto"
+            }
+        );
+
         const image = await prisma.image.findFirst({
             where: {
                 user_id: Number(fields.id)
@@ -67,7 +83,7 @@ const handler = async (
                 user_id: Number(fields.id)
             },
             data: {
-                path: (files?.files as formidable.File).newFilename
+                path: cloudinaryResponse.secure_url
             }
         })
 

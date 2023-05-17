@@ -27,7 +27,7 @@ export default function SideNav ({ name, image_link, toggled, options }: Props) 
     <div className={`flex flex-col bg-primary-gray justify-between ${open ? 'w-[350px] max-w-[600px] ' : 'w-14'} transition-all h-screen fixed left-0 top-0 z-50`}>
       <div className='flex flex-col  items-center h-5/6'>
         <div className='flex flex-col items-center mt-10 '>
-          <Image src={!session?.user?.image ? `/${session?.user?.image?.path}` : "/default.png"}
+          <Image src={!session?.user?.image ? `${session?.user?.image?.path}` : "/default.png"}
             width={100}
             height={100}
             onClick={() => { setOpen(!open); toggled && toggled(!open) }}
